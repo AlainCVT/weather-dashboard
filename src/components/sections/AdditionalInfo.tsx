@@ -1,11 +1,16 @@
 import { getWeather } from '@/api'
 import type { WeatherResponse } from '@/schemas/weather'
+import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
 import Card from '@/components/cards/Card'
 import Icon, { type IconsNames } from '@/components/icons/Icon'
-import Spinner from '@/components/ui/Spinner'
+import Spinner from '@/components/Spinner'
+
+type Props = {
+  coords: Coords
+}
 
 type CurrentWeather = WeatherResponse['current']
 
@@ -69,10 +74,10 @@ const INFO_ROWS = {
   },
 } satisfies { [K in keyof CurrentWeather]?: InfoRow<K> }
 
-export default function AdditionalInfo() {
+export default function AdditionalInfo({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 50, lon: 50 }),
+    queryKey: ['weather', coords],
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
     refetchOnWindowFocus: false,
@@ -94,7 +99,7 @@ export default function AdditionalInfo() {
                   className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
                 >
                   <div className="flex items-center gap-4 text-zinc-400">
-                    <Icon name={icon} className="size-8"></Icon>
+                    <Icon name={icon} className="size-8" />
                     <span>{label}</span>
                   </div>
                   <span>{formatter(data.current[type], data)}</span>

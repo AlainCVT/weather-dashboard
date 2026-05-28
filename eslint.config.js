@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -24,9 +25,12 @@ export default [
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       react,
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+      'no-undef': 'off',
       'no-unused-vars': 'off',
       'react/self-closing-comp': 'error',
       '@typescript-eslint/no-unused-vars': ['error'],

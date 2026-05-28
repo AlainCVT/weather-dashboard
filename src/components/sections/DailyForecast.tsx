@@ -1,14 +1,19 @@
 import { getWeather } from '@/api'
+import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
 import Card from '@/components/cards/Card'
 import WeatherIcon from '@/components/icons/WeatherIcon'
-import Spinner from '@/components/ui/Spinner'
+import Spinner from '@/components/Spinner'
 
-export default function DailyForecast() {
+type Props = {
+  coords: Coords
+}
+
+export default function DailyForecast({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 50, lon: 50 }),
+    queryKey: ['weather', coords],
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
     refetchOnWindowFocus: false,

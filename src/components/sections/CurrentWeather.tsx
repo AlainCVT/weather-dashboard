@@ -1,10 +1,15 @@
 import { getWeather } from '@/api'
-import { capitalize } from '@/libs/utils'
+import { capitalize } from '@/helpers/capitalize'
+import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
 import Card from '@/components/cards/Card'
 import WeatherIcon from '@/components/icons/WeatherIcon'
-import Spinner from '@/components/ui/Spinner'
+import Spinner from '@/components/Spinner'
+
+type Props = {
+  coords: Coords
+}
 
 const Stats = ({ title, value }: { title: string; value: string }) => (
   <div className="grid justify-items-center gap-2">
@@ -13,10 +18,10 @@ const Stats = ({ title, value }: { title: string; value: string }) => (
   </div>
 )
 
-export default function CurrentWeather() {
+export default function CurrentWeather({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 50, lon: 50 }),
+    queryKey: ['weather', coords],
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
     refetchOnWindowFocus: false,

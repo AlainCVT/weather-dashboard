@@ -1,31 +1,29 @@
-import { useQuery } from '@tanstack/react-query'
-import { getWeather } from './api'
+import { useState } from 'react'
 import './App.css'
 
+import Map from '@/components/Map'
 import {
   SectionsAdditionalInfo,
   SectionsCurrentWeather,
   SectionsDailyForecast,
   SectionsHourlyForecast,
 } from '@/components/sections'
+import type { Coords } from '@/types'
 
 function App() {
-  useQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 50, lon: 50 }),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
-  })
+  const [coords, setCoords] = useState<Coords>({ lat: 0, lon: 0 })
+
+  const onMapClick = (coords: Coords) => {
+    setCoords(coords)
+  }
 
   return (
     <div className="grid gap-6 p-6">
-      <SectionsCurrentWeather />
-      <SectionsHourlyForecast />
-      <SectionsDailyForecast />
-      <SectionsAdditionalInfo />
+      <Map coords={coords} onMapClick={onMapClick} />
+      <SectionsCurrentWeather coords={coords} />
+      <SectionsHourlyForecast coords={coords} />
+      <SectionsDailyForecast coords={coords} />
+      <SectionsAdditionalInfo coords={coords} />
     </div>
   )
 }
