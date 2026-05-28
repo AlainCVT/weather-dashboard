@@ -23,7 +23,7 @@ export default function HourlyForecast({ coords }: Props) {
 
   return (
     <Card title="Hourly Forecast">
-      <div className="-m-4 flex scrollbar-thumb-zinc-500 gap-6 overflow-x-auto p-4">
+      <div className="-m-4 flex gap-6 overflow-x-auto p-4">
         {!data ? (
           <Spinner />
         ) : (
