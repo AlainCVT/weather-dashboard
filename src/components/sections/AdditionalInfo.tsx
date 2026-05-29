@@ -6,7 +6,7 @@ import type { ReactNode } from 'react'
 
 import Card from '@/components/cards/Card'
 import Icon, { type IconsNames } from '@/components/icons/Icon'
-import Spinner from '@/components/Spinner'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
   coords: Coords
@@ -57,7 +57,7 @@ const INFO_ROWS = {
     label: 'Sunrise',
     icon: 'Sunrise',
     formatter: (value, data) =>
-      new Date(value * 1000).toLocaleTimeString('fr-FR', {
+      new Date(value * 1000).toLocaleTimeString('en-UK', {
         timeStyle: 'short',
         timeZone: data.timezone,
       }),
@@ -67,47 +67,61 @@ const INFO_ROWS = {
     label: 'Sunset',
     icon: 'Sunset',
     formatter: (value, data) =>
-      new Date(value * 1000).toLocaleTimeString('fr-FR', {
+      new Date(value * 1000).toLocaleTimeString('en-UK', {
         timeStyle: 'short',
         timeZone: data.timezone,
       }),
   },
 } satisfies { [K in keyof CurrentWeather]?: InfoRow<K> }
 
+export function AdditionalInfoSkeleton() {
+  return (
+    <Card title="Additional Weather Info">
+      <div className="grid gap-4">
+        <div className="grid gap-6">
+          {Object.entries(INFO_ROWS).map(([key, { label, icon }]) => (
+            <div
+              key={key}
+              className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
+            >
+              <div className="flex items-center gap-4 text-zinc-400">
+                <Icon name={icon} className="size-8" />
+                <span>{label}</span>
+              </div>
+              <Skeleton className="h-6 w-16" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </Card>
+  )
+}
+
 export default function AdditionalInfo({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather', coords],
+    queryKey: ['weather', coords.lat, coords.lon],
     queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
   })
 
   return (
     <Card title="Additional Weather Info">
       <div className="grid gap-4">
-        {!data ? (
-          <Spinner />
-        ) : (
-          <div className="grid gap-6">
-            {Object.entries(INFO_ROWS).map(
-              ([key, { type, label, icon, formatter }]) => (
-                <div
-                  key={key}
-                  className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
-                >
-                  <div className="flex items-center gap-4 text-zinc-400">
-                    <Icon name={icon} className="size-8" />
-                    <span>{label}</span>
-                  </div>
-                  <span>{formatter(data.current[type], data)}</span>
+        <div className="grid gap-6">
+          {Object.entries(INFO_ROWS).map(
+            ([key, { type, label, icon, formatter }]) => (
+              <div
+                key={key}
+                className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
+              >
+                <div className="flex items-center gap-4 text-zinc-400">
+                  <Icon name={icon} className="size-8" />
+                  <span>{label}</span>
                 </div>
-              ),
-            )}
-          </div>
-        )}
+                <span>{formatter(data.current[type], data)}</span>
+              </div>
+            ),
+          )}
+        </div>
       </div>
     </Card>
   )

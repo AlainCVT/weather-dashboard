@@ -1,6 +1,6 @@
 import { getGeocode } from '@/api'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import './App.css'
 
 import LocationDropdown, {
@@ -12,9 +12,13 @@ import MapTypeDropdown, {
 import Map from '@/components/Map'
 import {
   SectionsAdditionalInfo,
+  SectionsAdditionalInfoSkeleton,
   SectionsCurrentWeather,
+  SectionsCurrentWeatherSkeleton,
   SectionsDailyForecast,
+  SectionsDailyForecastSkeleton,
   SectionsHourlyForecast,
+  SectionsHourlyForecastSkeleton,
 } from '@/components/sections'
 import type { Coords } from '@/types'
 
@@ -40,21 +44,29 @@ function App() {
 
   return (
     <div className="grid gap-6 p-6">
-      <div className="flex gap-4">
+      <div className="grid justify-start gap-4 md:grid-flow-col">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">Location:</h2>
+          <h2 className="text-lg font-semibold whitespace-nowrap">Location:</h2>
           <LocationDropdown location={location} setLocation={setLocation} />
         </div>
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">Map Type:</h2>
+          <h2 className="text-lg font-semibold whitespace-nowrap">Map Type:</h2>
           <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
         </div>
       </div>
       <Map coords={currentCoords} onMapClick={onMapClick} mapType={mapType} />
-      <SectionsCurrentWeather coords={currentCoords} />
-      <SectionsHourlyForecast coords={currentCoords} />
-      <SectionsDailyForecast coords={currentCoords} />
-      <SectionsAdditionalInfo coords={currentCoords} />
+      <Suspense fallback={<SectionsCurrentWeatherSkeleton />}>
+        <SectionsCurrentWeather coords={currentCoords} />
+      </Suspense>
+      <Suspense fallback={<SectionsHourlyForecastSkeleton />}>
+        <SectionsHourlyForecast coords={currentCoords} />
+      </Suspense>
+      <Suspense fallback={<SectionsDailyForecastSkeleton />}>
+        <SectionsDailyForecast coords={currentCoords} />
+      </Suspense>
+      <Suspense fallback={<SectionsAdditionalInfoSkeleton />}>
+        <SectionsAdditionalInfo coords={currentCoords} />
+      </Suspense>
     </div>
   )
 }

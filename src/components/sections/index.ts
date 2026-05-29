@@ -1,4 +1,16 @@
-export { default as SectionsAdditionalInfo } from '@/components/sections/AdditionalInfo'
-export { default as SectionsCurrentWeather } from '@/components/sections/CurrentWeather'
-export { default as SectionsDailyForecast } from '@/components/sections/DailyForecast'
-export { default as SectionsHourlyForecast } from '@/components/sections/HourlyForecast'
+export {
+  default as SectionsAdditionalInfo,
+  AdditionalInfoSkeleton as SectionsAdditionalInfoSkeleton,
+} from '@/components/sections/AdditionalInfo'
+export {
+  default as SectionsCurrentWeather,
+  CurrentWeatherSkeleton as SectionsCurrentWeatherSkeleton,
+} from '@/components/sections/CurrentWeather'
+export {
+  default as SectionsDailyForecast,
+  DailyForecastSkeleton as SectionsDailyForecastSkeleton,
+} from '@/components/sections/DailyForecast'
+export {
+  default as SectionsHourlyForecast,
+  HourlyForecastSkeleton as SectionsHourlyForecastSkeleton,
+} from '@/components/sections/HourlyForecast'
