@@ -2,7 +2,7 @@ import { getWeather } from '@/api'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-import Card from '@/components/cards/Card'
+import Card from '@/components/Card'
 import WeatherIcon from '@/components/icons/WeatherIcon'
 import { Skeleton } from '@/components/ui/skeleton'
 

@@ -4,7 +4,7 @@ import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
-import Card from '@/components/cards/Card'
+import Card from '@/components/Card'
 import WeatherIcon from '@/components/icons/WeatherIcon'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -14,7 +14,7 @@ type Props = {
 
 const Stats = ({ title, value }: { title: string; value: ReactNode }) => (
   <div className="grid justify-items-center gap-2">
-    <p className="text-zinc-400">{title}</p>
+    <p className="text-muted-foreground">{title}</p>
     <p>{value}</p>
   </div>
 )
@@ -30,7 +30,7 @@ export function CurrentWeatherSkeleton() {
             <Skeleton className="h-7 w-36" />
           </div>
           <div className="grid justify-items-center gap-2">
-            <p className="text-xl text-zinc-400">Local time</p>
+            <p className="text-muted-foreground text-xl">Local time</p>
             <Skeleton className="h-10 w-28" />
           </div>
           <div className="grid auto-cols-fr grid-flow-col items-center gap-2">
@@ -70,7 +70,7 @@ export default function CurrentWeather({ coords }: Props) {
             </h3>
           </div>
           <div className="grid justify-items-center gap-2">
-            <p className="text-xl text-zinc-400">Local time</p>
+            <p className="text-muted-foreground text-xl">Local time</p>
             <h3 className="text-4xl font-semibold">
               {new Intl.DateTimeFormat('en-UK', {
                 timeStyle: 'short',

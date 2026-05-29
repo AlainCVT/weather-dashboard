@@ -4,7 +4,7 @@ import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
-import Card from '@/components/cards/Card'
+import Card from '@/components/Card'
 import Icon, { type IconsNames } from '@/components/icons/Icon'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -84,7 +84,7 @@ export function AdditionalInfoSkeleton() {
               key={key}
               className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
             >
-              <div className="flex items-center gap-4 text-zinc-400">
+              <div className="text-muted-foreground flex items-center gap-4">
                 <Icon name={icon} className="size-8" />
                 <span>{label}</span>
               </div>
@@ -113,7 +113,7 @@ export default function AdditionalInfo({ coords }: Props) {
                 key={key}
                 className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
               >
-                <div className="flex items-center gap-4 text-zinc-400">
+                <div className="text-muted-foreground flex items-center gap-4">
                   <Icon name={icon} className="size-8" />
                   <span>{label}</span>
                 </div>

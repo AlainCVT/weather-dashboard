@@ -231,7 +231,7 @@
 }
 
 * {
-  @apply scrollbar-thumb-zinc-500;
+  @apply scrollbar-thumb-accent;
 }
 
 *::selection {
