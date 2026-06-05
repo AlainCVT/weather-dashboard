@@ -1,10 +1,10 @@
 import type { ColorStop, Coords } from '@/types'
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk'
 import 'leaflet/dist/leaflet.css'
+import { useEffect } from 'react'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 
 import type { MapType } from '@/components/dropdowns/MapTypeDropdown'
-import { useEffect } from 'react'
 
 const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY
 const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY

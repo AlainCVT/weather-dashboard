@@ -1,4 +1,11 @@
 import { getAirPollution } from '@/api'
+import { capitalize } from '@/helpers/capitalize'
+import type { AirPollutionResponse } from '@/schemas/air-pollution'
+import type { Coords } from '@/types'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import clsx from 'clsx'
+import { Suspense, useEffect, type Dispatch, type SetStateAction } from 'react'
+
 import Card from '@/components/Card'
 import Icon from '@/components/icons/Icon'
 import { Button } from '@/components/ui/button'
@@ -9,12 +16,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { capitalize } from '@/helpers/capitalize'
-import type { AirPollutionResponse } from '@/schemas/air-pollution'
-import type { Coords } from '@/types'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import clsx from 'clsx'
-import { Suspense, useEffect, type Dispatch, type SetStateAction } from 'react'
 
 type Props = {
   coords: Coords

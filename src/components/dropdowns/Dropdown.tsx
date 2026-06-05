@@ -1,10 +1,11 @@
+import type { Dispatch, PropsWithChildren, SetStateAction } from 'react'
+
 import {
   Select,
   SelectContent,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Dispatch, PropsWithChildren, SetStateAction } from 'react'
 
 type Props<T extends string> = PropsWithChildren<{
   title: string

@@ -1,6 +1,7 @@
+import type { Dispatch, SetStateAction } from 'react'
+
 import Dropdown from '@/components/dropdowns/Dropdown'
 import { SelectGroup, SelectItem } from '@/components/ui/select'
-import type { Dispatch, SetStateAction } from 'react'
 
 const TYPES = {
   clouds_new: 'Clouds',

@@ -1,10 +1,11 @@
+import type { Dispatch, SetStateAction } from 'react'
+
 import Dropdown from '@/components/dropdowns/Dropdown'
 import {
   SelectGroup,
   SelectItem,
   SelectSeparator,
 } from '@/components/ui/select'
-import type { Dispatch, SetStateAction } from 'react'
 
 const LOCATIONS_CITIES = {
   Africa: ['Cairo', 'Lagos', 'Johannesburg', 'Nairobi', 'Casablanca'],
