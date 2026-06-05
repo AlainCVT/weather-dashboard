@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select'
 import type { Dispatch, SetStateAction } from 'react'
 
-const LOCATIONS = {
+const LOCATIONS_CITIES = {
   Africa: ['Cairo', 'Lagos', 'Johannesburg', 'Nairobi', 'Casablanca'],
 
   Europe: ['London', 'Paris', 'Berlin', 'Madrid', 'Rome'],
@@ -35,21 +35,27 @@ const LOCATIONS = {
   Oceania: ['Sydney', 'Melbourne', 'Auckland', 'Brisbane', 'Perth'],
 } as const satisfies Record<string, string[]>
 
-export type Location = ValueOf<typeof LOCATIONS>[number] | null
+export type LocationCity = ValueOf<typeof LOCATIONS_CITIES>[number] | null
 
 type Props = {
-  location: Location
-  setLocation: Dispatch<SetStateAction<Location>>
+  locationCity: LocationCity
+  setLocationCity: Dispatch<SetStateAction<LocationCity>>
 }
 
-export default function LocationDropdown({ location, setLocation }: Props) {
+export default function LocationCityDropdown({
+  locationCity,
+  setLocationCity,
+}: Props) {
   return (
-    <Select value={location} onValueChange={(value) => setLocation(value)}>
+    <Select
+      value={locationCity}
+      onValueChange={(value) => setLocationCity(value)}
+    >
       <SelectTrigger className="w-45">
         <SelectValue placeholder="Location" />
       </SelectTrigger>
       <SelectContent>
-        {Object.entries(LOCATIONS).map(([continent, cities], index) => (
+        {Object.entries(LOCATIONS_CITIES).map(([continent, cities], index) => (
           <>
             {!!index && <SelectSeparator />}
             <SelectGroup key={continent}>

@@ -2,7 +2,7 @@ import {
   AirPollutionSchema,
   type AirPollutionResponse,
 } from '@/schemas/air-pollution'
-import { GeocodeSchema, type GeocodeResponse } from '@/schemas/geocode'
+import { LocationSchema, type LocationResponse } from '@/schemas/location'
 import { WeatherSchema, type WeatherResponse } from '@/schemas/weather'
 import type { Coords } from '@/types'
 
@@ -22,18 +22,28 @@ export async function getWeather(coords: Coords): Promise<WeatherResponse> {
   return WeatherSchema.parse(data)
 }
 
-export async function getGeocode(query: string): Promise<GeocodeResponse> {
-  if (!query) return []
+export async function getLocation(
+  payload: string | Coords,
+): Promise<LocationResponse> {
+  if (!payload) return []
 
-  const url = new URL('geo/1.0/direct', OPENWEATHER_API_URL)
+  const url =
+    typeof payload === 'string'
+      ? new URL('geo/1.0/direct', OPENWEATHER_API_URL)
+      : new URL('geo/1.0/reverse', OPENWEATHER_API_URL)
 
-  url.searchParams.append('q', query)
+  if (typeof payload === 'string') {
+    url.searchParams.append('q', payload)
+  } else {
+    url.searchParams.append('lat', payload.lat.toString())
+    url.searchParams.append('lon', payload.lon.toString())
+  }
   url.searchParams.append('limit', '1')
   url.searchParams.append('appid', OPENWEATHER_API_KEY)
 
   const data = await fetch(url.toString()).then((result) => result.json())
 
-  return GeocodeSchema.parse(data)
+  return LocationSchema.parse(data)
 }
 
 export async function getAirPollution(

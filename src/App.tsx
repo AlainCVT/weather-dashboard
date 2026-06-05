@@ -1,11 +1,11 @@
-import { getGeocode } from '@/api'
+import { getLocation } from '@/api'
 import { useQuery } from '@tanstack/react-query'
 import { Suspense, useState } from 'react'
 import './App.css'
 
-import LocationDropdown, {
-  type Location,
-} from '@/components/dropdowns/LocationDropdown'
+import LocationCityDropdown, {
+  type LocationCity,
+} from '@/components/dropdowns/LocationCityDropdown'
 import MapTypeDropdown, {
   type MapType,
 } from '@/components/dropdowns/MapTypeDropdown'
@@ -28,12 +28,12 @@ import type { Coords } from '@/types'
 function App() {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false)
   const [coords, setCoords] = useState<Coords>({ lat: 0, lon: 0 })
-  const [location, setLocation] = useState<Location>(null)
+  const [location, setLocation] = useState<LocationCity>(null)
   const [mapType, setMapType] = useState<MapType>(null)
 
-  const { data: geotcodeData } = useQuery({
-    queryKey: ['geocode', location],
-    queryFn: () => getGeocode(location ?? ''),
+  const { data: locationData } = useQuery({
+    queryKey: ['location', location, coords.lat, coords.lon],
+    queryFn: () => getLocation(location ?? coords),
   })
 
   const onMapClick = (coords: Coords) => {
@@ -44,7 +44,7 @@ function App() {
   const currentCoords: Coords =
     location === null
       ? coords
-      : { lat: geotcodeData?.[0].lat ?? 0, lon: geotcodeData?.[0].lon ?? 0 }
+      : { lat: locationData?.[0].lat ?? 0, lon: locationData?.[0].lon ?? 0 }
 
   return (
     <>
@@ -55,7 +55,10 @@ function App() {
               <h2 className="text-lg font-semibold whitespace-nowrap">
                 Location:
               </h2>
-              <LocationDropdown location={location} setLocation={setLocation} />
+              <LocationCityDropdown
+                locationCity={location}
+                setLocationCity={setLocation}
+              />
             </div>
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-semibold whitespace-nowrap">

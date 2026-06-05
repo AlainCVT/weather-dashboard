@@ -1,9 +1,9 @@
 import z from 'zod'
 
-export const GeocodeSchema = z.array(
+export const LocationSchema = z.array(
   z.object({
     name: z.string(),
-    local_names: z.record(z.string(), z.string()),
+    local_names: z.record(z.string(), z.string()).optional(),
     lat: z.number(),
     lon: z.number(),
     country: z.string(),
@@ -11,4 +11,4 @@ export const GeocodeSchema = z.array(
   }),
 )
 
-export type GeocodeResponse = z.infer<typeof GeocodeSchema>
+export type LocationResponse = z.infer<typeof LocationSchema>
