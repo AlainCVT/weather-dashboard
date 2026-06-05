@@ -94,7 +94,7 @@ const AlertSchema = z.object({
   tags: z.array(z.string()),
 })
 
-export const WeatherResponseSchema = z.object({
+export const WeatherSchema = z.object({
   lat: z.number(),
   lon: z.number(),
   timezone: z.string(),
@@ -105,4 +105,4 @@ export const WeatherResponseSchema = z.object({
   alerts: z.array(AlertSchema).optional(),
 })
 
-export type WeatherResponse = z.infer<typeof WeatherResponseSchema>
+export type WeatherResponse = z.infer<typeof WeatherSchema>

@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const GeocodeResponseSchema = z.array(
+export const GeocodeSchema = z.array(
   z.object({
     name: z.string(),
     local_names: z.record(z.string(), z.string()),
@@ -11,4 +11,4 @@ export const GeocodeResponseSchema = z.array(
   }),
 )
 
-export type GeocodeResponse = z.infer<typeof GeocodeResponseSchema>
+export type GeocodeResponse = z.infer<typeof GeocodeSchema>

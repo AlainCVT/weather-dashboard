@@ -1,6 +1,6 @@
-import { GeocodeResponseSchema, type GeocodeResponse } from '@/schemas/geocode'
+import { GeocodeSchema, type GeocodeResponse } from '@/schemas/geocode'
+import { WeatherSchema, type WeatherResponse } from '@/schemas/weather'
 import type { Coords } from '@/types'
-import { WeatherResponseSchema, type WeatherResponse } from './schemas/weather'
 
 const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 const OPENWEATHER_API_URL = import.meta.env.VITE_OPENWEATHER_API_URL
@@ -15,7 +15,7 @@ export async function getWeather(coords: Coords): Promise<WeatherResponse> {
 
   const data = await fetch(url.toString()).then((result) => result.json())
 
-  return WeatherResponseSchema.parse(data)
+  return WeatherSchema.parse(data)
 }
 
 export async function getGeocode(query: string): Promise<GeocodeResponse> {
@@ -29,5 +29,5 @@ export async function getGeocode(query: string): Promise<GeocodeResponse> {
 
   const data = await fetch(url.toString()).then((result) => result.json())
 
-  return GeocodeResponseSchema.parse(data)
+  return GeocodeSchema.parse(data)
 }
