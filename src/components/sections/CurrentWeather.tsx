@@ -36,12 +36,15 @@ export function CurrentWeatherSkeleton() {
           <div className="grid auto-cols-fr grid-flow-col items-center gap-2">
             <Stats
               title="Feels like"
-              value={<Skeleton className="h-6 w-16" />}
+              value={<Skeleton as="span" className="h-6 w-16" />}
             />
-            <Stats title="Humidity" value={<Skeleton className="h-6 w-16" />} />
+            <Stats
+              title="Humidity"
+              value={<Skeleton as="span" className="h-6 w-16" />}
+            />
             <Stats
               title="Wind speed"
-              value={<Skeleton className="h-6 w-16" />}
+              value={<Skeleton as="span" className="h-6 w-16" />}
             />
           </div>
         </div>
