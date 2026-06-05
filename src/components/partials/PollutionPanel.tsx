@@ -14,7 +14,7 @@ import type { AirPollutionResponse } from '@/schemas/air-pollution'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { Suspense, type Dispatch, type SetStateAction } from 'react'
+import { Suspense, useEffect, type Dispatch, type SetStateAction } from 'react'
 
 type Props = {
   coords: Coords
@@ -289,6 +289,22 @@ const AirPollutionStats = ({ coords }: Props) => {
 
 export default function PollutionPanel(props: Props) {
   const { isOpen, toggleState } = props
+
+  useEffect(() => {
+    const escapePanel = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        toggleState(false)
+      }
+    }
+
+    if (isOpen) {
+      window.addEventListener('keydown', escapePanel)
+    }
+
+    return () => {
+      window.removeEventListener('keydown', escapePanel)
+    }
+  })
 
   return (
     <aside
