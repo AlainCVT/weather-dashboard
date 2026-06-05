@@ -100,7 +100,7 @@ export function AdditionalInfoSkeleton() {
 export default function AdditionalInfo({ coords }: Props) {
   const { data } = useSuspenseQuery({
     queryKey: ['weather', coords.lat, coords.lon],
-    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
+    queryFn: () => getWeather(coords),
   })
 
   return (
