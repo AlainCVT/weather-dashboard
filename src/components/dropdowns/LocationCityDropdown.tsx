@@ -1,11 +1,8 @@
+import Dropdown from '@/components/dropdowns/Dropdown'
 import {
-  Select,
-  SelectContent,
   SelectGroup,
   SelectItem,
   SelectSeparator,
-  SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -47,27 +44,19 @@ export default function LocationCityDropdown({
   setLocationCity,
 }: Props) {
   return (
-    <Select
-      value={locationCity}
-      onValueChange={(value) => setLocationCity(value)}
-    >
-      <SelectTrigger className="w-45">
-        <SelectValue placeholder="Location" />
-      </SelectTrigger>
-      <SelectContent>
-        {Object.entries(LOCATIONS_CITIES).map(([continent, cities], index) => (
-          <>
-            {!!index && <SelectSeparator />}
-            <SelectGroup key={continent}>
-              {cities.map((city) => (
-                <SelectItem key={city} value={city}>
-                  {city}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </>
-        ))}
-      </SelectContent>
-    </Select>
+    <Dropdown title="Location" value={locationCity} setValue={setLocationCity}>
+      {Object.entries(LOCATIONS_CITIES).map(([continent, cities], index) => (
+        <>
+          {!!index && <SelectSeparator />}
+          <SelectGroup key={continent}>
+            {cities.map((city) => (
+              <SelectItem key={city} value={city}>
+                {city}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </>
+      ))}
+    </Dropdown>
   )
 }

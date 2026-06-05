@@ -1,11 +1,5 @@
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import Dropdown from '@/components/dropdowns/Dropdown'
+import { SelectGroup, SelectItem } from '@/components/ui/select'
 import type { Dispatch, SetStateAction } from 'react'
 
 const TYPES = {
@@ -25,21 +19,19 @@ type Props = {
 
 export default function MapTypeDropdown({ mapType, setMapType }: Props) {
   return (
-    <Select value={mapType} onValueChange={(value) => setMapType(value)}>
-      <SelectTrigger className="w-45">
-        <SelectValue placeholder="Map Type">
-          {mapType && TYPES[mapType]}
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          {Object.entries(TYPES).map(([type, label]) => (
-            <SelectItem key={type} value={type}>
-              {label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <Dropdown
+      title="Map Type"
+      {...(mapType && { currentDisplayedValue: TYPES[mapType] })}
+      value={mapType}
+      setValue={setMapType}
+    >
+      <SelectGroup>
+        {Object.entries(TYPES).map(([type, label]) => (
+          <SelectItem key={type} value={type}>
+            {label}
+          </SelectItem>
+        ))}
+      </SelectGroup>
+    </Dropdown>
   )
 }

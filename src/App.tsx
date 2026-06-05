@@ -51,21 +51,11 @@ function App() {
       <div className="grid gap-6 p-6">
         <div className="flex justify-between gap-4">
           <div className="grid justify-start gap-4 md:grid-flow-col">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold whitespace-nowrap">
-                Location:
-              </h2>
-              <LocationCityDropdown
-                locationCity={location}
-                setLocationCity={setLocation}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold whitespace-nowrap">
-                Map Type:
-              </h2>
-              <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
-            </div>
+            <LocationCityDropdown
+              locationCity={location}
+              setLocationCity={setLocation}
+            />
+            <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
           </div>
           <Button
             variant="secondary"
