@@ -25,19 +25,19 @@ const INFO_ROWS = {
   clouds: {
     type: 'clouds',
     label: 'Cloudiness',
-    icon: 'Cloud',
+    icon: 'Weather/Cloud',
     formatter: (value) => `${value}%`,
   },
   uvi: {
     type: 'uvi',
     label: 'UV Index',
-    icon: 'UV',
+    icon: 'Weather/UV',
     formatter: (value) => value,
   },
   wind_deg: {
     type: 'wind_deg',
     label: 'Wind Direction',
-    icon: 'Wind',
+    icon: 'Weather/Wind',
     formatter: (value) => (
       <Icon
         name="Arrow"
@@ -49,13 +49,13 @@ const INFO_ROWS = {
   pressure: {
     type: 'pressure',
     label: 'Pressure',
-    icon: 'Pressure',
+    icon: 'Weather/Pressure',
     formatter: (value) => `${value} hPa`,
   },
   sunrise: {
     type: 'sunrise',
     label: 'Sunrise',
-    icon: 'Sunrise',
+    icon: 'Weather/Sunrise',
     formatter: (value, data) =>
       new Date(value * 1000).toLocaleTimeString('en-UK', {
         timeStyle: 'short',
@@ -65,7 +65,7 @@ const INFO_ROWS = {
   sunset: {
     type: 'sunset',
     label: 'Sunset',
-    icon: 'Sunset',
+    icon: 'Weather/Sunset',
     formatter: (value, data) =>
       new Date(value * 1000).toLocaleTimeString('en-UK', {
         timeStyle: 'short',
