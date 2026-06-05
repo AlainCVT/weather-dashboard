@@ -1,3 +1,7 @@
+import {
+  AirPollutionSchema,
+  type AirPollutionResponse,
+} from '@/schemas/air-pollution'
 import { GeocodeSchema, type GeocodeResponse } from '@/schemas/geocode'
 import { WeatherSchema, type WeatherResponse } from '@/schemas/weather'
 import type { Coords } from '@/types'
@@ -30,4 +34,18 @@ export async function getGeocode(query: string): Promise<GeocodeResponse> {
   const data = await fetch(url.toString()).then((result) => result.json())
 
   return GeocodeSchema.parse(data)
+}
+
+export async function getAirPollution(
+  coords: Coords,
+): Promise<AirPollutionResponse> {
+  const url = new URL('data/2.5/air_pollution', OPENWEATHER_API_URL)
+
+  url.searchParams.append('lat', coords.lat.toString())
+  url.searchParams.append('lon', coords.lon.toString())
+  url.searchParams.append('appid', OPENWEATHER_API_KEY)
+
+  const data = await fetch(url.toString()).then((result) => result.json())
+
+  return AirPollutionSchema.parse(data)
 }

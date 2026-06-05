@@ -12,6 +12,61 @@ const ICONS = {
       />
     ),
   },
+  Chevron: {
+    type: 'stroke',
+    node: (
+      <path
+        d="M18 15L12 9L6 15"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    ),
+  },
+  Hamburger: {
+    type: 'stroke',
+    node: (
+      <>
+        <path
+          d="M22.0001 4L2 4"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M22.0001 12L2 12"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M22.0001 20L2 20"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </>
+    ),
+  },
+  Information: {
+    type: 'stroke',
+    node: (
+      <>
+        <circle cx="12" cy="12" r="9" stroke-width="2" fill="none" />
+        <path
+          d="M12.0001 8H12V8.0001H12.0001V8Z"
+          stroke-width="3"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 12V16"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </>
+    ),
+  },
   'Weather/Cloud': {
     type: 'fill',
     node: (
