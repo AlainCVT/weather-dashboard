@@ -4,6 +4,8 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/inter';
 
+@import 'styles/overrides.css';
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

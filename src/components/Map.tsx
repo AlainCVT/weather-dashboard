@@ -144,7 +144,7 @@ const MapLegend = ({ mapType }: Props) => {
     .join(', ')
 
   return (
-    <div className="bg-background/80 border-accent/80 absolute top-4 right-4 z-400 grid w-96 gap-2 border p-2 shadow-lg backdrop-blur-xs">
+    <div className="bg-background/80 border-accent/80 absolute top-4 right-4 grid w-96 gap-2 border p-2 shadow-lg backdrop-blur-xs">
       <h3 className="text-foreground text-sm font-semibold">{data.title}</h3>
       <div
         className="border-accent h-2 w-full border"

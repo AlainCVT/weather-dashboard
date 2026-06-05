@@ -1,0 +1,8 @@
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-map-pane canvas,
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control {
+  z-index: 0 !important;
+}
