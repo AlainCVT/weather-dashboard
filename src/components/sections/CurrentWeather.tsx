@@ -1,15 +1,17 @@
-import { getWeather } from '@/api'
+import { getCountryName, getWeather } from '@/api'
 import { capitalize } from '@/helpers/capitalize'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import type { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
 import Card from '@/components/Card'
 import WeatherIcon from '@/components/icons/WeatherIcon'
 import { Skeleton } from '@/components/ui/skeleton'
+import type { LocationResponse } from '@/schemas/location'
 
 type Props = {
   coords: Coords
+  location?: LocationResponse[number]
 }
 
 const Stats = ({ title, value }: { title: string; value: ReactNode }) => (
@@ -21,7 +23,7 @@ const Stats = ({ title, value }: { title: string; value: ReactNode }) => (
 
 export function CurrentWeatherSkeleton() {
   return (
-    <Card title="Current Weather">
+    <Card heading="Current Weather">
       <div className="grid gap-4">
         <div className="grid gap-8 text-center">
           <div className="grid justify-items-center gap-2">
@@ -53,23 +55,38 @@ export function CurrentWeatherSkeleton() {
   )
 }
 
-export default function CurrentWeather({ coords }: Props) {
-  const { data } = useSuspenseQuery({
+export default function CurrentWeather({ coords, location }: Props) {
+  const { data: weatherData } = useSuspenseQuery({
     queryKey: ['weather', coords.lat, coords.lon],
     queryFn: () => getWeather(coords),
   })
 
+  const { data: countryName } = useSuspenseQuery({
+    queryKey: ['country', location?.country],
+    queryFn: () => getCountryName(location?.country ?? ''),
+  })
+
+  const locationName: string = location
+    ? [location.name, location.state, countryName?.name.common]
+        .filter(Boolean)
+        .join(', ')
+    : ''
+
   return (
-    <Card title="Current Weather">
+    <Card
+      heading={
+        locationName ? `Current Weather (${locationName})` : 'Current Weather'
+      }
+    >
       <div className="grid gap-4">
         <div className="grid gap-8 text-center">
           <div className="grid justify-items-center gap-2">
             <h2 className="text-6xl font-semibold">
-              {Math.round(data.current.temp)}°C
+              {Math.round(weatherData.current.temp)}°C
             </h2>
-            <WeatherIcon src={data.current.weather[0].icon} size="lg" />
+            <WeatherIcon src={weatherData.current.weather[0].icon} size="lg" />
             <h3 className="text-xl">
-              {capitalize(data.current.weather[0].description)}
+              {capitalize(weatherData.current.weather[0].description)}
             </h3>
           </div>
           <div className="grid justify-items-center gap-2">
@@ -77,22 +94,22 @@ export default function CurrentWeather({ coords }: Props) {
             <h3 className="text-4xl font-semibold">
               {new Intl.DateTimeFormat('en-UK', {
                 timeStyle: 'short',
-                timeZone: data.timezone,
+                timeZone: weatherData.timezone,
               }).format(new Date())}
             </h3>
           </div>
           <div className="grid auto-cols-fr grid-flow-col items-center gap-2">
             <Stats
               title="Feels like"
-              value={`${Math.round(data.current.feels_like)}°C`}
+              value={`${Math.round(weatherData.current.feels_like)}°C`}
             />
             <Stats
               title="Humidity"
-              value={`${Math.round(data.current.humidity)}%`}
+              value={`${Math.round(weatherData.current.humidity)}%`}
             />
             <Stats
               title="Wind speed"
-              value={`${Math.round(data.current.wind_speed * 3.6)} km/h`}
+              value={`${Math.round(weatherData.current.wind_speed * 3.6)} km/h`}
             />
           </div>
         </div>

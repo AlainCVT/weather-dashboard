@@ -69,7 +69,10 @@ function App() {
         </div>
         <Map coords={currentCoords} onMapClick={onMapClick} mapType={mapType} />
         <Suspense fallback={<SectionsCurrentWeatherSkeleton />}>
-          <SectionsCurrentWeather coords={currentCoords} />
+          <SectionsCurrentWeather
+            coords={currentCoords}
+            {...(locationData && { location: locationData[0] })}
+          />
         </Suspense>
         <Suspense fallback={<SectionsHourlyForecastSkeleton />}>
           <SectionsHourlyForecast coords={currentCoords} />

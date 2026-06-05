@@ -12,7 +12,7 @@ type Props = {
 
 export function DailyForecastSkeleton() {
   return (
-    <Card title="Daily Forecast">
+    <Card heading="Daily Forecast">
       <div className="-m-4 grid overflow-auto p-4">
         <table className="whitespace-nowrap [&_td>*]:px-2">
           <tbody>
@@ -49,7 +49,7 @@ export default function DailyForecast({ coords }: Props) {
   })
 
   return (
-    <Card title="Daily Forecast">
+    <Card heading="Daily Forecast">
       <div className="-m-4 grid overflow-auto p-4">
         <table className="whitespace-nowrap [&_td>*]:px-2">
           <tbody>

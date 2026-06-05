@@ -76,7 +76,7 @@ const INFO_ROWS = {
 
 export function AdditionalInfoSkeleton() {
   return (
-    <Card title="Additional Weather Info">
+    <Card heading="Additional Weather Info">
       <div className="grid gap-4">
         <div className="grid gap-6">
           {Object.entries(INFO_ROWS).map(([key, { label, icon }]) => (
@@ -104,7 +104,7 @@ export default function AdditionalInfo({ coords }: Props) {
   })
 
   return (
-    <Card title="Additional Weather Info">
+    <Card heading="Additional Weather Info">
       <div className="grid gap-4">
         <div className="grid gap-6">
           {Object.entries(INFO_ROWS).map(

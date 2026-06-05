@@ -3,10 +3,10 @@ import type { ComponentProps, PropsWithChildren, ReactNode } from 'react'
 
 type Props = ComponentProps<'div'> &
   PropsWithChildren<{
-    title?: ReactNode
+    heading?: ReactNode
   }>
 
-export default function Card({ className, title, children }: Props) {
+export default function Card({ className, heading, children }: Props) {
   return (
     <div
       className={clsx(
@@ -14,7 +14,7 @@ export default function Card({ className, title, children }: Props) {
         className,
       )}
     >
-      {!!title && <h2 className="text-2xl font-semibold">{title}</h2>}
+      {!!heading && <h2 className="text-2xl font-semibold">{heading}</h2>}
       {children}
     </div>
   )

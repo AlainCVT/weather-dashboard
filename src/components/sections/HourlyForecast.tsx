@@ -12,7 +12,7 @@ type Props = {
 
 export function HourlyForecastSkeleton() {
   return (
-    <Card title="Hourly Forecast">
+    <Card heading="Hourly Forecast">
       <div className="-m-4 flex gap-6 overflow-x-auto p-4">
         {Array.from({ length: 16 }).map((_, index) => (
           <div
@@ -36,7 +36,7 @@ export default function HourlyForecast({ coords }: Props) {
   })
 
   return (
-    <Card title="Hourly Forecast">
+    <Card heading="Hourly Forecast">
       <div className="-m-4 flex gap-6 overflow-x-auto p-4">
         {data.hourly.map((hour) => (
           <div
