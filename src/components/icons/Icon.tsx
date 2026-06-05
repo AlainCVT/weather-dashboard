@@ -20,6 +20,7 @@ const ICONS = {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
+        fill="none"
       />
     ),
   },
@@ -65,6 +66,12 @@ const ICONS = {
           stroke-linejoin="round"
         />
       </>
+    ),
+  },
+  Marker: {
+    type: 'fill',
+    node: (
+      <path d="M6 0C9.31371 0 12 2.68629 12 6C12 9.31371 6 20 6 20C6 20 0 9.31371 0 6C0 2.68629 2.68629 0 6 0ZM6 3C4.34315 3 3 4.34315 3 6C3 7.65685 4.34315 9 6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3Z" />
     ),
   },
   'Weather/Cloud': {
@@ -128,14 +135,18 @@ const ICONS = {
 
 type Props = SVGProps<SVGSVGElement> & {
   name: keyof typeof ICONS
+  size?: SVGProps<SVGSVGElement>['width'] | SVGProps<SVGSVGElement>['height']
 }
 
-export default function Icon({ name, ...props }: Props) {
+export default function Icon({ name, size = 24, ...props }: Props) {
   return (
     <svg
       viewBox="0 0 24 24"
-      {...{ [ICONS[name].type]: 'currentColor' }}
       xmlns="http://www.w3.org/2000/svg"
+      {...{
+        [ICONS[name].type]: 'currentColor',
+        ...(size && { width: size, height: size }),
+      }}
       {...props}
     >
       {ICONS[name].node}

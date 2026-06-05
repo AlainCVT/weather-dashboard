@@ -63,7 +63,11 @@ function App() {
               setIsSidePanelOpen(true)
             }}
           >
-            <Icon name="Hamburger" className="text-muted-foreground size-4" />
+            <Icon
+              name="Hamburger"
+              size={16}
+              className="text-muted-foreground"
+            />
             View pollution
           </Button>
         </div>

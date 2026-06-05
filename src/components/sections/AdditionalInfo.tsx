@@ -41,7 +41,7 @@ const INFO_ROWS = {
     formatter: (value) => (
       <Icon
         name="Arrow"
-        className="size-8"
+        size={32}
         style={{ transform: `rotate(${value}deg)` }}
       />
     ),
@@ -85,7 +85,7 @@ export function AdditionalInfoSkeleton() {
               className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
             >
               <div className="text-muted-foreground flex items-center gap-4">
-                <Icon name={icon} className="size-8" />
+                <Icon name={icon} size={32} />
                 <span>{label}</span>
               </div>
               <Skeleton className="h-6 w-16" />
@@ -114,7 +114,7 @@ export default function AdditionalInfo({ coords }: Props) {
                 className="grid grid-flow-col items-center justify-between gap-4 whitespace-nowrap"
               >
                 <div className="text-muted-foreground flex items-center gap-4">
-                  <Icon name={icon} className="size-8" />
+                  <Icon name={icon} size={32} />
                   <span>{label}</span>
                 </div>
                 <span>{formatter(data.current[type], data)}</span>

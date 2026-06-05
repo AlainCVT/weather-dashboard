@@ -1,10 +1,13 @@
 import type { ColorStop, Coords } from '@/types'
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk'
+import { divIcon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect } from 'react'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 
 import type { MapType } from '@/components/dropdowns/MapTypeDropdown'
+import Icon from '@/components/icons/Icon'
+import { renderToString } from 'react-dom/server'
 
 const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY
 const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
@@ -97,6 +100,13 @@ type Props = {
   mapType: MapType
 }
 
+const MarkerIcon = divIcon({
+  html: renderToString(
+    <Icon name="Marker" size={48} className="text-foreground" />,
+  ),
+  className: '',
+})
+
 const MapClick = ({ coords, onMapClick }: Omit<Props, 'mapType'>) => {
   const map = useMap()
 
@@ -175,7 +185,7 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
         <TileLayer
           url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`}
         />
-        <Marker position={[lat, lon]} />
+        <Marker position={[lat, lon]} icon={MarkerIcon} />
       </MapContainer>
       <MapLegend coords={coords} onMapClick={onMapClick} mapType={mapType} />
     </div>

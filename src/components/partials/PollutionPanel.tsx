@@ -122,7 +122,7 @@ function AirPollutionStatsSkeleton() {
           <span className="text-xl">AQI</span>
           <Tooltip>
             <TooltipTrigger>
-              <Icon name="Information" className="text-ring size-6" />
+              <Icon name="Information" size={24} className="text-ring" />
             </TooltipTrigger>
             <TooltipContent>
               <p className="max-w-xs">
@@ -150,7 +150,11 @@ function AirPollutionStatsSkeleton() {
                   </span>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Icon name="Information" className="text-ring size-4" />
+                      <Icon
+                        name="Information"
+                        size={16}
+                        className="text-ring"
+                      />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs">
@@ -196,7 +200,7 @@ const AirPollutionStats = ({ coords }: Props) => {
           <span className="text-xl">AQI</span>
           <Tooltip>
             <TooltipTrigger>
-              <Icon name="Information" className="text-ring size-6" />
+              <Icon name="Information" size={24} className="text-ring" />
             </TooltipTrigger>
             <TooltipContent>
               <p className="max-w-xs">
@@ -243,7 +247,11 @@ const AirPollutionStats = ({ coords }: Props) => {
                   </span>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Icon name="Information" className="text-ring size-4" />
+                      <Icon
+                        name="Information"
+                        size={16}
+                        className="text-ring"
+                      />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs">
@@ -326,7 +334,8 @@ export default function PollutionPanel(props: Props) {
       >
         <Icon
           name="Chevron"
-          className="text-muted-foreground size-4 -rotate-90"
+          size={16}
+          className="text-muted-foreground -rotate-90"
         />
         Close
       </Button>
