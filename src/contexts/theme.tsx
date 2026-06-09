@@ -17,7 +17,10 @@ export const ThemeContext = createContext<{
 })
 
 export function ThemeProvider({ children }: PropsWithChildren) {
-  const [theme, setTheme] = useState<Theme>('dark')
+  const [theme, setTheme] = useState<Theme>(() => {
+    const saved = localStorage.getItem('theme')
+    return saved ? JSON.parse(saved) : null
+  })
 
   const toggleTheme = (theme?: Theme) => {
     if (typeof theme === 'string') {
@@ -34,6 +37,8 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     } else {
       root.classList.remove('dark')
     }
+
+    localStorage.setItem('theme', JSON.stringify(theme))
   }, [theme])
 
   return (

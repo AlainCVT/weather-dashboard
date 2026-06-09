@@ -1,9 +1,10 @@
 import { getLocation } from '@/api'
 import { SidePanelStateProvider } from '@/contexts/side-panel'
+import { useCoordinatesURL } from '@/hooks/useCoordinatesURL'
 import { useLocationCityStore } from '@/stores/location-city'
 import type { Coords } from '@/types'
 import { useQuery } from '@tanstack/react-query'
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import './App.css'
 
 import Map from '@/components/Map'
@@ -20,7 +21,7 @@ import {
 } from '@/components/sections'
 
 function App() {
-  const [coords, setCoords] = useState<Coords>({ lat: 0, lon: 0 })
+  const [coords, setCoords] = useCoordinatesURL()
 
   const { locationCity } = useLocationCityStore()
 
