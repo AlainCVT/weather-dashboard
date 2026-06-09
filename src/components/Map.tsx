@@ -112,8 +112,10 @@ const MarkerIcon = L.divIcon({
 
 const MapScrollZoomController = ({
   displayAlertScroll,
+  stopAlertScrollTimer,
 }: {
   displayAlertScroll: () => void
+  stopAlertScrollTimer: () => void
 }) => {
   const map = useMap()
 
@@ -154,6 +156,8 @@ const MapScrollZoomController = ({
       if (!(event.ctrlKey || event.metaKey)) {
         event.preventDefault()
         displayAlertScroll()
+      } else {
+        stopAlertScrollTimer()
       }
     }
 
@@ -162,7 +166,7 @@ const MapScrollZoomController = ({
     return () => {
       container.removeEventListener('wheel', handleWheel)
     }
-  }, [map, displayAlertScroll])
+  }, [map, displayAlertScroll, stopAlertScrollTimer])
 
   return null
 }
@@ -266,6 +270,11 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
     }, 1000)
   }
 
+  const stopAlertScrollTimer = () => {
+    clearAlertScrollTimer()
+    setShouldAlertScroll(false)
+  }
+
   return (
     <div className="border-accent relative grid border">
       <MapContainer
@@ -277,9 +286,8 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
         scrollWheelZoom={false}
       >
         <MapScrollZoomController
-          displayAlertScroll={() => {
-            displayAlertScroll()
-          }}
+          displayAlertScroll={displayAlertScroll}
+          stopAlertScrollTimer={stopAlertScrollTimer}
         />
         <MapClick coords={coords} onMapClick={onMapClick} />
         <MapTileLayer />
