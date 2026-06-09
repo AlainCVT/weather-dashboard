@@ -47,7 +47,7 @@ function App() {
       : { lat: locationData?.[0].lat ?? 0, lon: locationData?.[0].lon ?? 0 }
 
   return (
-    <>
+    <div className="grid h-screen grid-flow-col overflow-hidden *:overflow-auto">
       <div className="grid gap-6 p-6">
         <div className="flex justify-between gap-4">
           <div className="grid justify-start gap-4 md:grid-flow-col">
@@ -58,6 +58,7 @@ function App() {
             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
           </div>
           <Button
+            className="lg:hidden"
             variant="secondary"
             onClick={() => {
               setIsSidePanelOpen(true)
@@ -68,7 +69,6 @@ function App() {
               size={16}
               className="text-muted-foreground"
             />
-            View pollution
           </Button>
         </div>
         <Map coords={currentCoords} onMapClick={onMapClick} mapType={mapType} />
@@ -89,11 +89,12 @@ function App() {
         </Suspense>
       </div>
       <PartialsPollutionPanel
+        className="not-lg:fixed not-lg:top-0 not-lg:left-full"
         coords={currentCoords}
         isOpen={isSidePanelOpen}
         toggleState={setIsSidePanelOpen}
       />
-    </>
+    </div>
   )
 }
 

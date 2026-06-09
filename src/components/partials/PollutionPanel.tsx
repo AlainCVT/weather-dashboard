@@ -4,7 +4,13 @@ import type { AirPollutionResponse } from '@/schemas/air-pollution'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { Suspense, useEffect, type Dispatch, type SetStateAction } from 'react'
+import {
+  Suspense,
+  useEffect,
+  type ComponentProps,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 
 import Card from '@/components/Card'
 import Icon from '@/components/icons/Icon'
@@ -17,7 +23,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-type Props = {
+type Props = ComponentProps<'aside'> & {
   coords: Coords
   isOpen: boolean
   toggleState: Dispatch<SetStateAction<boolean>>
@@ -185,7 +191,7 @@ function AirPollutionStatsSkeleton() {
   )
 }
 
-const AirPollutionStats = ({ coords }: Props) => {
+const AirPollutionStats = ({ coords }: Pick<Props, 'coords'>) => {
   const { data } = useSuspenseQuery({
     queryKey: ['air-pollution', coords.lat, coords.lon],
     queryFn: () => getAirPollution(coords),
@@ -296,9 +302,12 @@ const AirPollutionStats = ({ coords }: Props) => {
   )
 }
 
-export default function PollutionPanel(props: Props) {
-  const { isOpen, toggleState } = props
-
+export default function PollutionPanel({
+  coords,
+  isOpen,
+  toggleState,
+  className,
+}: Props) {
   useEffect(() => {
     const escapePanel = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -318,15 +327,17 @@ export default function PollutionPanel(props: Props) {
   return (
     <aside
       className={clsx(
-        'bg-sidebar border-accent fixed top-0 left-full grid h-screen w-xs gap-4 overflow-auto border-l px-4 py-6 shadow-md transition-transform duration-400',
+        className,
+        'bg-sidebar border-accent grid w-xs content-start gap-4 overflow-auto border-l px-4 py-6 shadow-md duration-400 not-lg:transition-transform',
         {
-          '-translate-x-full': isOpen,
-          'pointer-none': !isOpen,
+          'not-lg:-translate-x-full': isOpen,
+          'not-lg:pointer-none': !isOpen,
         },
       )}
       {...(!isOpen && { tabIndex: -1 })}
     >
       <Button
+        className="lg:hidden"
         variant="secondary"
         onClick={() => {
           toggleState(false)
@@ -340,7 +351,7 @@ export default function PollutionPanel(props: Props) {
         Close
       </Button>
       <Suspense fallback={<AirPollutionStatsSkeleton />}>
-        <AirPollutionStats {...props} />
+        <AirPollutionStats coords={coords} />
       </Suspense>
     </aside>
   )
