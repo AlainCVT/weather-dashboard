@@ -34,10 +34,10 @@ export function SidePanelStateProvider({ children }: PropsWithChildren) {
 }
 
 export const useSidePanelState = () => {
-  const state = useContext(SidePanelStateContext)
+  const context = useContext(SidePanelStateContext)
 
   return {
-    ...state,
-    isOpen: state.state === 'open',
+    ...context,
+    isOpen: context.state === 'open',
   }
 }

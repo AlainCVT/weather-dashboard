@@ -3,6 +3,7 @@ import { useSidePanelState } from '@/contexts/side-panel'
 import LocationCityDropdown from '@/components/dropdowns/LocationCityDropdown'
 import MapTypeDropdown from '@/components/dropdowns/MapTypeDropdown'
 import Icon from '@/components/icons/Icon'
+import ThemeSwitcher from '@/components/ThemeSwitcher'
 import { Button } from '@/components/ui/button'
 
 export default function Header() {
@@ -14,8 +15,10 @@ export default function Header() {
         <LocationCityDropdown />
         <MapTypeDropdown />
       </div>
-      <div className="before:from-background before:to-background/0 relative flex h-full items-center before:pointer-events-none before:absolute before:right-full before:h-full before:w-4 before:bg-linear-to-l lg:hidden">
+      <div className="before:from-background before:to-background/0 relative grid h-full grid-flow-col items-center gap-3 before:pointer-events-none before:absolute before:right-full before:h-full before:w-4 before:bg-linear-to-l">
+        <ThemeSwitcher />
         <Button
+          className="lg:hidden"
           variant="secondary"
           onClick={() => {
             toggleState('open')

@@ -1,3 +1,4 @@
+import { useTheme } from '@/contexts/theme'
 import { isMac } from '@/helpers/navigator'
 import '@/lib/SmoothWheelZoom'
 import { useLocationCityStore } from '@/stores/location-city'
@@ -106,9 +107,9 @@ type Props = ComponentProps<'div'> & {
 
 const MarkerIcon = L.divIcon({
   html: renderToString(
-    <Icon name="Marker" size={48} className="text-foreground" />,
+    <Icon name="Marker" size={48} className="text-foreground absolute" />,
   ),
-  className: '',
+  className: 'flex! justify-center items-end',
 })
 
 const MapScrollZoomController = ({
@@ -200,9 +201,11 @@ const MapClick = ({ coords, onMapClick }: Omit<Props, 'mapType'>) => {
 const MapTileLayer = () => {
   const map = useMap()
 
+  const { isDark } = useTheme()
+
   useEffect(() => {
     const tileLayer = new MaptilerLayer({
-      style: 'basic-dark',
+      style: isDark ? 'basic-dark' : 'basic-light',
       apiKey: MAPTILER_API_KEY,
     })
     tileLayer.addTo(map)
@@ -210,7 +213,7 @@ const MapTileLayer = () => {
     return () => {
       map.removeLayer(tileLayer)
     }
-  }, [map])
+  }, [map, isDark])
 
   return null
 }
