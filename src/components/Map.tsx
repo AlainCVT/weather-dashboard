@@ -156,7 +156,6 @@ const MapScrollZoomController = ({
 
     const handleWheel = (event: WheelEvent) => {
       if (!(event.ctrlKey || event.metaKey)) {
-        event.preventDefault()
         displayAlertScroll()
       } else {
         stopAlertScrollTimer()

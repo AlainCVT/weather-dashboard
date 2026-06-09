@@ -19,6 +19,7 @@ import {
   SectionsHourlyForecast,
   SectionsHourlyForecastSkeleton,
 } from '@/components/sections'
+import Title, { TitleSkeleton } from '@/components/Title'
 
 function App() {
   const [coords, setCoords, updateURL] = useCoordinatesURL()
@@ -53,6 +54,12 @@ function App() {
         <div className="grid">
           <PartialsHeader />
           <div className="grid grid-cols-12 gap-6 p-6">
+            <Suspense fallback={<TitleSkeleton />}>
+              <Title
+                className="col-span-full"
+                {...(locationData && { location: locationData[0] })}
+              />
+            </Suspense>
             <Map
               className="col-span-full"
               coords={currentCoords}
@@ -62,10 +69,7 @@ function App() {
             />
             <div className="col-span-12 grid md:col-span-6 2xl:col-span-4 2xl:row-span-2">
               <Suspense fallback={<SectionsCurrentWeatherSkeleton />}>
-                <SectionsCurrentWeather
-                  coords={currentCoords}
-                  {...(locationData && { location: locationData[0] })}
-                />
+                <SectionsCurrentWeather coords={currentCoords} />
               </Suspense>
             </div>
             <div className="col-span-12 grid md:col-span-6 2xl:col-span-4 2xl:row-span-2">

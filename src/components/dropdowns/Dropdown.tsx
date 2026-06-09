@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import type {
   ComponentProps,
   Dispatch,
@@ -11,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import clsx from 'clsx'
 
 type Props<T extends string> = ComponentProps<'div'> &
   PropsWithChildren<{

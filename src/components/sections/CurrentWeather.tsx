@@ -1,4 +1,4 @@
-import { getCountryName, getWeather } from '@/api'
+import { getWeather } from '@/api'
 import { capitalize } from '@/helpers/capitalize'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
@@ -7,11 +7,9 @@ import { type ReactNode } from 'react'
 import Card from '@/components/Card'
 import WeatherIcon from '@/components/icons/WeatherIcon'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { LocationResponse } from '@/schemas/location'
 
 type Props = {
   coords: Coords
-  location?: LocationResponse[number]
 }
 
 const Stats = ({ title, value }: { title: string; value: ReactNode }) => (
@@ -55,29 +53,14 @@ export function CurrentWeatherSkeleton() {
   )
 }
 
-export default function CurrentWeather({ coords, location }: Props) {
+export default function CurrentWeather({ coords }: Props) {
   const { data: weatherData } = useSuspenseQuery({
     queryKey: ['weather', coords?.lat, coords?.lon],
     queryFn: () => getWeather(coords),
   })
 
-  const { data: countryName } = useSuspenseQuery({
-    queryKey: ['country', location?.country],
-    queryFn: () => getCountryName(location?.country ?? ''),
-  })
-
-  const locationName: string | null = location
-    ? [location.name, location.state, countryName?.name.common]
-        .filter(Boolean)
-        .join(', ')
-    : null
-
   return weatherData ? (
-    <Card
-      heading={
-        locationName ? `Current Weather (${locationName})` : 'Current Weather'
-      }
-    >
+    <Card heading="Current Weather">
       <div className="grid grow gap-4">
         <div className="grid gap-8 text-center">
           <div className="grid items-center justify-items-center gap-2">
