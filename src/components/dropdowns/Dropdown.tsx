@@ -18,7 +18,7 @@ type Props<T extends string> = ComponentProps<'div'> &
     title: string
     currentDisplayedValue?: string
     value: T | null
-    setValue: Dispatch<SetStateAction<T | null>>
+    setValue: Dispatch<SetStateAction<T | null>> | ((value: T | null) => void)
   }>
 
 export default function Dropdown<T extends string>({

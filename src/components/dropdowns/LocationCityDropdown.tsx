@@ -1,4 +1,4 @@
-import type { ComponentProps, Dispatch, SetStateAction } from 'react'
+import { useLocationCityStore } from '@/stores/location-city'
 
 import Dropdown from '@/components/dropdowns/Dropdown'
 import {
@@ -35,23 +35,11 @@ const LOCATIONS_CITIES = {
 
 export type LocationCity = ValueOf<typeof LOCATIONS_CITIES>[number] | null
 
-type Props = ComponentProps<'div'> & {
-  locationCity: LocationCity
-  setLocationCity: Dispatch<SetStateAction<LocationCity>>
-}
+export default function LocationCityDropdown() {
+  const { locationCity, setLocationCity } = useLocationCityStore()
 
-export default function LocationCityDropdown({
-  locationCity,
-  setLocationCity,
-  className,
-}: Props) {
   return (
-    <Dropdown
-      className={className}
-      title="Location"
-      value={locationCity}
-      setValue={setLocationCity}
-    >
+    <Dropdown title="Location" value={locationCity} setValue={setLocationCity}>
       {Object.entries(LOCATIONS_CITIES).map(([continent, cities], index) => (
         <>
           {!!index && <SelectSeparator />}

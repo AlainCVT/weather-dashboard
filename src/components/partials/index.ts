@@ -1,1 +1,2 @@
-export { default as PartialsPollutionPanel } from '@/components/partials/PollutionPanel'
+export { default as PartialsHeader } from '@/components/partials/Header'
+export { default as PartialsSidePanel } from '@/components/partials/SidePanel'

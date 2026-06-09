@@ -4,17 +4,9 @@ import type { AirPollutionResponse } from '@/schemas/air-pollution'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
-import {
-  Suspense,
-  useEffect,
-  type ComponentProps,
-  type Dispatch,
-  type SetStateAction,
-} from 'react'
 
 import Card from '@/components/Card'
 import Icon from '@/components/icons/Icon'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Slider } from '@/components/ui/slider'
 import {
@@ -23,10 +15,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-type Props = ComponentProps<'aside'> & {
+type Props = {
   coords: Coords
-  isOpen: boolean
-  toggleState: Dispatch<SetStateAction<boolean>>
 }
 
 type AirPollutant = keyof AirPollutionResponse['list'][number]['components']
@@ -118,7 +108,7 @@ const AIR_QUALITY_RANGES: AirQualityRanges = {
   },
 }
 
-function AirPollutionStatsSkeleton() {
+export function AirPollutionStatsSkeleton() {
   return (
     <div className="grid gap-4">
       <h2 className="text-2xl font-semibold">Air Pollution</h2>
@@ -191,7 +181,7 @@ function AirPollutionStatsSkeleton() {
   )
 }
 
-const AirPollutionStats = ({ coords }: Pick<Props, 'coords'>) => {
+export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
   const { data } = useSuspenseQuery({
     queryKey: ['air-pollution', coords.lat, coords.lon],
     queryFn: () => getAirPollution(coords),
@@ -299,60 +289,5 @@ const AirPollutionStats = ({ coords }: Pick<Props, 'coords'>) => {
         )
       })}
     </div>
-  )
-}
-
-export default function PollutionPanel({
-  coords,
-  isOpen,
-  toggleState,
-  className,
-}: Props) {
-  useEffect(() => {
-    const escapePanel = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        toggleState(false)
-      }
-    }
-
-    if (isOpen) {
-      window.addEventListener('keydown', escapePanel)
-    }
-
-    return () => {
-      window.removeEventListener('keydown', escapePanel)
-    }
-  })
-
-  return (
-    <aside
-      className={clsx(
-        className,
-        'bg-sidebar border-accent grid h-screen w-xs content-start gap-4 overflow-auto border-l px-4 py-6 shadow-md duration-400 not-lg:transition-transform',
-        {
-          'not-lg:-translate-x-full': isOpen,
-          'not-lg:pointer-none': !isOpen,
-        },
-      )}
-      {...(!isOpen && { tabIndex: -1 })}
-    >
-      <Button
-        className="lg:hidden"
-        variant="secondary"
-        onClick={() => {
-          toggleState(false)
-        }}
-      >
-        <Icon
-          name="Chevron"
-          size={16}
-          className="text-muted-foreground -rotate-90"
-        />
-        Close
-      </Button>
-      <Suspense fallback={<AirPollutionStatsSkeleton />}>
-        <AirPollutionStats coords={coords} />
-      </Suspense>
-    </aside>
   )
 }

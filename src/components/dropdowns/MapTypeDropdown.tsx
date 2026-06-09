@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react'
+import { useMapTypeStore } from '@/stores/map-type'
 
 import Dropdown from '@/components/dropdowns/Dropdown'
 import { SelectGroup, SelectItem } from '@/components/ui/select'
@@ -13,12 +13,9 @@ const TYPES = {
 
 export type MapType = keyof typeof TYPES | null
 
-type Props = {
-  mapType: MapType
-  setMapType: Dispatch<SetStateAction<MapType>>
-}
+export default function MapTypeDropdown() {
+  const { mapType, setMapType } = useMapTypeStore()
 
-export default function MapTypeDropdown({ mapType, setMapType }: Props) {
   return (
     <Dropdown
       title="Map Type"

@@ -1,5 +1,7 @@
 import { isMac } from '@/helpers/navigator'
 import '@/lib/SmoothWheelZoom'
+import { useLocationCityStore } from '@/stores/location-city'
+import { useMapTypeStore } from '@/stores/map-type'
 import type { ColorStop, Coords } from '@/types'
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk'
 import clsx from 'clsx'
@@ -100,7 +102,6 @@ const MAP_TYPE_DATA = {
 type Props = ComponentProps<'div'> & {
   coords: Coords
   onMapClick: (coords: Coords) => void
-  mapType: MapType
 }
 
 const MarkerIcon = L.divIcon({
@@ -174,6 +175,8 @@ const MapScrollZoomController = ({
 const MapClick = ({ coords, onMapClick }: Omit<Props, 'mapType'>) => {
   const map = useMap()
 
+  const { setLocationCity } = useLocationCityStore()
+
   useEffect(() => {
     map.panTo([coords.lat, coords.lon])
   }, [map, coords])
@@ -182,13 +185,14 @@ const MapClick = ({ coords, onMapClick }: Omit<Props, 'mapType'>) => {
     const handleMapClick = (event: L.LeafletMouseEvent) => {
       const { lat, lng } = event.latlng
       onMapClick({ lat, lon: lng })
+      setLocationCity(null)
     }
 
     map.on('click', handleMapClick)
     return () => {
       map.off('click', handleMapClick)
     }
-  }, [map, onMapClick])
+  }, [map, onMapClick, setLocationCity])
 
   return null
 }
@@ -211,7 +215,9 @@ const MapTileLayer = () => {
   return null
 }
 
-const MapLegend = ({ mapType }: Props) => {
+const MapLegend = () => {
+  const { mapType } = useMapTypeStore()
+
   if (!mapType) return null
 
   const data = MAP_TYPE_DATA[mapType]
@@ -247,12 +253,14 @@ const MapLegend = ({ mapType }: Props) => {
   )
 }
 
-export default function Map({ coords, onMapClick, mapType, className }: Props) {
+export default function Map({ coords, onMapClick, className }: Props) {
   const { lat, lon } = coords
 
   const [shouldAlertScroll, setShouldAlertScroll] = useState<boolean>(false)
 
   const alertScrollTimerRef = useRef<number | null>(null)
+
+  const { mapType } = useMapTypeStore()
 
   const clearAlertScrollTimer = () => {
     if (alertScrollTimerRef.current) {
@@ -296,7 +304,7 @@ export default function Map({ coords, onMapClick, mapType, className }: Props) {
         />
         <Marker position={[lat, lon]} icon={MarkerIcon} />
       </MapContainer>
-      <MapLegend coords={coords} onMapClick={onMapClick} mapType={mapType} />
+      <MapLegend />
       <div
         className={clsx(
           'bg-background/80 pointer-events-none absolute inset-0 flex items-center justify-center p-6 backdrop-blur-sm transition-opacity duration-400',

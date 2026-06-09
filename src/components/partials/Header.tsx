@@ -1,0 +1,29 @@
+import { useSidePanelState } from '@/contexts/side-panel'
+
+import LocationCityDropdown from '@/components/dropdowns/LocationCityDropdown'
+import MapTypeDropdown from '@/components/dropdowns/MapTypeDropdown'
+import Icon from '@/components/icons/Icon'
+import { Button } from '@/components/ui/button'
+
+export default function Header() {
+  const { toggleState } = useSidePanelState()
+
+  return (
+    <header className="bg-background/80 border-b-accent sticky top-0 z-1 grid grid-flow-col items-center justify-between border-b pr-6 backdrop-blur-sm">
+      <div className="no-scrollbar grid grid-flow-col justify-start gap-4 overflow-auto px-4 py-6">
+        <LocationCityDropdown />
+        <MapTypeDropdown />
+      </div>
+      <div className="before:from-background before:to-background/0 relative flex h-full items-center before:pointer-events-none before:absolute before:right-full before:h-full before:w-4 before:bg-linear-to-l lg:hidden">
+        <Button
+          variant="secondary"
+          onClick={() => {
+            toggleState('open')
+          }}
+        >
+          <Icon name="Hamburger" size={16} className="text-muted-foreground" />
+        </Button>
+      </div>
+    </header>
+  )
+}
