@@ -5,7 +5,7 @@ import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk'
 import clsx from 'clsx'
 import * as L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ComponentProps } from 'react'
 import { renderToString } from 'react-dom/server'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 
@@ -97,7 +97,7 @@ const MAP_TYPE_DATA = {
   { title: string; unit: string; stops: ColorStop[] }
 >
 
-type Props = {
+type Props = ComponentProps<'div'> & {
   coords: Coords
   onMapClick: (coords: Coords) => void
   mapType: MapType
@@ -227,7 +227,7 @@ const MapLegend = ({ mapType }: Props) => {
     .join(', ')
 
   return (
-    <div className="bg-background/80 border-accent/80 absolute top-4 right-4 grid w-96 gap-2 border p-2 shadow-lg backdrop-blur-xs">
+    <div className="bg-background/80 border-accent/80 xs:w-64 absolute top-4 right-4 grid w-48 gap-2 border p-2 shadow-lg backdrop-blur-xs sm:w-96">
       <h3 className="text-foreground text-sm font-semibold">{data.title}</h3>
       <div
         className="border-accent h-2 w-full border"
@@ -247,7 +247,7 @@ const MapLegend = ({ mapType }: Props) => {
   )
 }
 
-export default function Map({ coords, onMapClick, mapType }: Props) {
+export default function Map({ coords, onMapClick, mapType, className }: Props) {
   const { lat, lon } = coords
 
   const [shouldAlertScroll, setShouldAlertScroll] = useState<boolean>(false)
@@ -276,7 +276,7 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
   }
 
   return (
-    <div className="border-accent relative grid border">
+    <div className={clsx(className, 'border-accent relative grid border')}>
       <MapContainer
         className="h-128 w-full"
         center={[lat, lon]}
@@ -299,13 +299,13 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
       <MapLegend coords={coords} onMapClick={onMapClick} mapType={mapType} />
       <div
         className={clsx(
-          'bg-background/80 pointer-events-none absolute inset-0 flex items-center justify-center backdrop-blur-sm transition-opacity duration-400',
+          'bg-background/80 pointer-events-none absolute inset-0 flex items-center justify-center p-6 backdrop-blur-sm transition-opacity duration-400',
           {
             'opacity-0': !shouldAlertScroll,
           },
         )}
       >
-        <span>
+        <span className="text-center">
           Use{' '}
           <span className="border-foreground bg-background mx-1 rounded-sm border px-1 py-0.5">
             {isMac() ? '⌘' : 'Ctrl'}

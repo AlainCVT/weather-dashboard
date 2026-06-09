@@ -1,4 +1,5 @@
 import { getLocation } from '@/api'
+import type { Coords } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { Suspense, useState } from 'react'
 import './App.css'
@@ -23,7 +24,6 @@ import {
   SectionsHourlyForecastSkeleton,
 } from '@/components/sections'
 import { Button } from '@/components/ui/button'
-import type { Coords } from '@/types'
 
 function App() {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false)
@@ -48,48 +48,64 @@ function App() {
 
   return (
     <div className="grid h-screen grid-flow-col overflow-hidden *:overflow-auto">
-      <div className="grid gap-6 p-6">
-        <div className="flex justify-between gap-4">
-          <div className="grid justify-start gap-4 md:grid-flow-col">
+      <div className="grid">
+        <header className="bg-background/80 border-b-accent sticky top-0 z-1 grid grid-flow-col items-center justify-between border-b pr-6 backdrop-blur-sm">
+          <div className="no-scrollbar grid grid-flow-col justify-start gap-4 overflow-auto px-4 py-6">
             <LocationCityDropdown
               locationCity={location}
               setLocationCity={setLocation}
             />
             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
           </div>
-          <Button
-            className="lg:hidden"
-            variant="secondary"
-            onClick={() => {
-              setIsSidePanelOpen(true)
-            }}
-          >
-            <Icon
-              name="Hamburger"
-              size={16}
-              className="text-muted-foreground"
-            />
-          </Button>
-        </div>
-        <Map coords={currentCoords} onMapClick={onMapClick} mapType={mapType} />
-        <Suspense fallback={<SectionsCurrentWeatherSkeleton />}>
-          <SectionsCurrentWeather
+          <div className="before:from-background before:to-background/0 relative flex h-full items-center before:pointer-events-none before:absolute before:right-full before:h-full before:w-4 before:bg-linear-to-l lg:hidden">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setIsSidePanelOpen(true)
+              }}
+            >
+              <Icon
+                name="Hamburger"
+                size={16}
+                className="text-muted-foreground"
+              />
+            </Button>
+          </div>
+        </header>
+        <div className="grid grid-cols-12 gap-6 p-6">
+          <Map
+            className="col-span-full"
             coords={currentCoords}
-            {...(locationData && { location: locationData[0] })}
+            onMapClick={onMapClick}
+            mapType={mapType}
           />
-        </Suspense>
-        <Suspense fallback={<SectionsHourlyForecastSkeleton />}>
-          <SectionsHourlyForecast coords={currentCoords} />
-        </Suspense>
-        <Suspense fallback={<SectionsDailyForecastSkeleton />}>
-          <SectionsDailyForecast coords={currentCoords} />
-        </Suspense>
-        <Suspense fallback={<SectionsAdditionalInfoSkeleton />}>
-          <SectionsAdditionalInfo coords={currentCoords} />
-        </Suspense>
+          <div className="col-span-12 grid md:col-span-6 2xl:col-span-4 2xl:row-span-2">
+            <Suspense fallback={<SectionsCurrentWeatherSkeleton />}>
+              <SectionsCurrentWeather
+                coords={currentCoords}
+                {...(locationData && { location: locationData[0] })}
+              />
+            </Suspense>
+          </div>
+          <div className="col-span-12 grid md:col-span-6 2xl:col-span-4 2xl:row-span-2">
+            <Suspense fallback={<SectionsDailyForecastSkeleton />}>
+              <SectionsDailyForecast coords={currentCoords} />
+            </Suspense>
+          </div>
+          <div className="col-span-12 grid 2xl:col-span-4">
+            <Suspense fallback={<SectionsHourlyForecastSkeleton />}>
+              <SectionsHourlyForecast coords={currentCoords} />
+            </Suspense>
+          </div>
+          <div className="col-span-12 grid 2xl:col-span-4">
+            <Suspense fallback={<SectionsAdditionalInfoSkeleton />}>
+              <SectionsAdditionalInfo coords={currentCoords} />
+            </Suspense>
+          </div>
+        </div>
       </div>
       <PartialsPollutionPanel
-        className="not-lg:fixed not-lg:top-0 not-lg:left-full"
+        className="z-1 not-lg:fixed not-lg:top-0 not-lg:left-full"
         coords={currentCoords}
         isOpen={isSidePanelOpen}
         toggleState={setIsSidePanelOpen}

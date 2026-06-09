@@ -15,7 +15,7 @@ type Props = {
 }
 
 const Stats = ({ title, value }: { title: string; value: ReactNode }) => (
-  <div className="grid justify-items-center gap-2">
+  <div className="grid items-center justify-items-center gap-2">
     <p className="text-muted-foreground">{title}</p>
     <p>{value}</p>
   </div>
@@ -24,14 +24,14 @@ const Stats = ({ title, value }: { title: string; value: ReactNode }) => (
 export function CurrentWeatherSkeleton() {
   return (
     <Card heading="Current Weather">
-      <div className="grid gap-4">
+      <div className="grid grow gap-4">
         <div className="grid gap-8 text-center">
-          <div className="grid justify-items-center gap-2">
+          <div className="grid items-center justify-items-center gap-2">
             <Skeleton className="h-15 w-40" />
             <Skeleton className="h-12 w-12 rounded-full" />
             <Skeleton className="h-7 w-36" />
           </div>
-          <div className="grid justify-items-center gap-2">
+          <div className="grid items-center justify-items-center gap-2">
             <p className="text-muted-foreground text-xl">Local time</p>
             <Skeleton className="h-10 w-28" />
           </div>
@@ -78,9 +78,9 @@ export default function CurrentWeather({ coords, location }: Props) {
         locationName ? `Current Weather (${locationName})` : 'Current Weather'
       }
     >
-      <div className="grid gap-4">
+      <div className="grid grow gap-4">
         <div className="grid gap-8 text-center">
-          <div className="grid justify-items-center gap-2">
+          <div className="grid items-center justify-items-center gap-2">
             <h2 className="text-6xl font-semibold">
               {Math.round(weatherData.current.temp)}°C
             </h2>
@@ -89,7 +89,7 @@ export default function CurrentWeather({ coords, location }: Props) {
               {capitalize(weatherData.current.weather[0].description)}
             </h3>
           </div>
-          <div className="grid justify-items-center gap-2">
+          <div className="grid items-center justify-items-center gap-2">
             <p className="text-muted-foreground text-xl">Local time</p>
             <h3 className="text-4xl font-semibold">
               {new Intl.DateTimeFormat('en-UK', {

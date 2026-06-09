@@ -13,7 +13,7 @@ type Props = {
 export function DailyForecastSkeleton() {
   return (
     <Card heading="Daily Forecast">
-      <div className="-m-4 grid overflow-auto p-4">
+      <div className="-m-4 grid grow overflow-auto p-4">
         <table className="whitespace-nowrap [&_td>*]:px-2">
           <tbody>
             {Array.from({ length: 8 }).map((_, index) => (
@@ -50,7 +50,7 @@ export default function DailyForecast({ coords }: Props) {
 
   return (
     <Card heading="Daily Forecast">
-      <div className="-m-4 grid overflow-auto p-4">
+      <div className="-m-4 grid grow overflow-auto p-4">
         <table className="whitespace-nowrap [&_td>*]:px-2">
           <tbody>
             {data.daily.map((day) => (
@@ -58,7 +58,7 @@ export default function DailyForecast({ coords }: Props) {
                 <td>
                   <span>
                     {new Date(day.dt * 1000).toLocaleDateString('en-UK', {
-                      weekday: 'long',
+                      weekday: 'short',
                       day: 'numeric',
                     })}
                   </span>

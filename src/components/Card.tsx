@@ -10,7 +10,7 @@ export default function Card({ className, heading, children }: Props) {
   return (
     <div
       className={clsx(
-        'from-card to-card/60 border-accent grid gap-6 border bg-linear-to-br p-4',
+        'from-card to-card/60 border-accent flex flex-col gap-6 border bg-linear-to-br p-4',
         className,
       )}
     >
