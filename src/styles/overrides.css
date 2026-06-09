@@ -1,3 +1,7 @@
+.leaflet-container {
+  @apply bg-background!;
+}
+
 .leaflet-pane,
 .leaflet-tile-pane,
 .leaflet-map-pane canvas,
@@ -5,4 +9,9 @@
 .leaflet-bottom,
 .leaflet-control {
   z-index: 0 !important;
+}
+
+.leaflet-control-attribution,
+.maplibregl-control-container {
+  display: none;
 }

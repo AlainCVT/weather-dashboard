@@ -1,13 +1,16 @@
+import { isMac } from '@/helpers/navigator'
+import '@/lib/SmoothWheelZoom'
 import type { ColorStop, Coords } from '@/types'
 import { MaptilerLayer } from '@maptiler/leaflet-maptilersdk'
-import { divIcon } from 'leaflet'
+import clsx from 'clsx'
+import * as L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { renderToString } from 'react-dom/server'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 
 import type { MapType } from '@/components/dropdowns/MapTypeDropdown'
 import Icon from '@/components/icons/Icon'
-import { renderToString } from 'react-dom/server'
 
 const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY
 const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
@@ -100,22 +103,88 @@ type Props = {
   mapType: MapType
 }
 
-const MarkerIcon = divIcon({
+const MarkerIcon = L.divIcon({
   html: renderToString(
     <Icon name="Marker" size={48} className="text-foreground" />,
   ),
   className: '',
 })
 
+const MapScrollZoomController = ({
+  displayAlertScroll,
+}: {
+  displayAlertScroll: () => void
+}) => {
+  const map = useMap()
+
+  useEffect(() => {
+    const enableWheelZoom = () => {
+      map?.smoothWheelZoom?.enable()
+    }
+
+    const disableWheelZoom = () => {
+      map?.smoothWheelZoom?.disable()
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey) enableWheelZoom()
+    }
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (!event.ctrlKey && !event.metaKey) disableWheelZoom()
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    window.addEventListener('blur', disableWheelZoom)
+
+    disableWheelZoom()
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+      window.removeEventListener('blur', disableWheelZoom)
+    }
+  }, [map])
+
+  useEffect(() => {
+    const container = map.getContainer()
+
+    const handleWheel = (event: WheelEvent) => {
+      if (!(event.ctrlKey || event.metaKey)) {
+        event.preventDefault()
+        displayAlertScroll()
+      }
+    }
+
+    container.addEventListener('wheel', handleWheel, { passive: false })
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel)
+    }
+  }, [map, displayAlertScroll])
+
+  return null
+}
+
 const MapClick = ({ coords, onMapClick }: Omit<Props, 'mapType'>) => {
   const map = useMap()
 
-  map.panTo([coords.lat, coords.lon])
+  useEffect(() => {
+    map.panTo([coords.lat, coords.lon])
+  }, [map, coords])
 
-  map.on('click', (event) => {
-    const { lat, lng } = event.latlng
-    onMapClick({ lat, lon: lng })
-  })
+  useEffect(() => {
+    const handleMapClick = (event: L.LeafletMouseEvent) => {
+      const { lat, lng } = event.latlng
+      onMapClick({ lat, lon: lng })
+    }
+
+    map.on('click', handleMapClick)
+    return () => {
+      map.off('click', handleMapClick)
+    }
+  }, [map, onMapClick])
 
   return null
 }
@@ -177,9 +246,41 @@ const MapLegend = ({ mapType }: Props) => {
 export default function Map({ coords, onMapClick, mapType }: Props) {
   const { lat, lon } = coords
 
+  const [shouldAlertScroll, setShouldAlertScroll] = useState<boolean>(false)
+
+  const alertScrollTimerRef = useRef<number | null>(null)
+
+  const clearAlertScrollTimer = () => {
+    if (alertScrollTimerRef.current) {
+      clearTimeout(alertScrollTimerRef.current)
+      alertScrollTimerRef.current = null
+    }
+  }
+
+  const displayAlertScroll = () => {
+    clearAlertScrollTimer()
+    setShouldAlertScroll(true)
+
+    alertScrollTimerRef.current = setTimeout(() => {
+      setShouldAlertScroll(false)
+    }, 1000)
+  }
+
   return (
-    <div className="border-accent relative border">
-      <MapContainer center={[lat, lon]} zoom={5} className="h-128 w-full">
+    <div className="border-accent relative grid border">
+      <MapContainer
+        className="h-128 w-full"
+        center={[lat, lon]}
+        zoom={5}
+        touchZoom={true}
+        zoomControl={false}
+        scrollWheelZoom={false}
+      >
+        <MapScrollZoomController
+          displayAlertScroll={() => {
+            displayAlertScroll()
+          }}
+        />
         <MapClick coords={coords} onMapClick={onMapClick} />
         <MapTileLayer />
         <TileLayer
@@ -188,6 +289,22 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
         <Marker position={[lat, lon]} icon={MarkerIcon} />
       </MapContainer>
       <MapLegend coords={coords} onMapClick={onMapClick} mapType={mapType} />
+      <div
+        className={clsx(
+          'bg-background/80 pointer-events-none absolute inset-0 flex items-center justify-center backdrop-blur-sm transition-opacity duration-400',
+          {
+            'opacity-0': !shouldAlertScroll,
+          },
+        )}
+      >
+        <span>
+          Use{' '}
+          <span className="border-foreground bg-background mx-1 rounded-sm border px-1 py-0.5">
+            {isMac() ? '⌘' : 'Ctrl'}
+          </span>{' '}
+          + scroll to zoom the map
+        </span>
+      </div>
     </div>
   )
 }
