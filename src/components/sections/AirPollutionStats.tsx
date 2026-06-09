@@ -183,11 +183,11 @@ export function AirPollutionStatsSkeleton() {
 
 export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
   const { data } = useSuspenseQuery({
-    queryKey: ['air-pollution', coords.lat, coords.lon],
+    queryKey: ['air-pollution', coords?.lat, coords?.lon],
     queryFn: () => getAirPollution(coords),
   })
 
-  return (
+  return data ? (
     <div className="grid gap-4">
       <h2 className="text-2xl font-semibold">Air Pollution</h2>
       <div className="grid gap-2">
@@ -289,5 +289,7 @@ export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
         )
       })}
     </div>
+  ) : (
+    <AirPollutionStatsSkeleton />
   )
 }

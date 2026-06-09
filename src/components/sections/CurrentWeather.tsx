@@ -57,7 +57,7 @@ export function CurrentWeatherSkeleton() {
 
 export default function CurrentWeather({ coords, location }: Props) {
   const { data: weatherData } = useSuspenseQuery({
-    queryKey: ['weather', coords.lat, coords.lon],
+    queryKey: ['weather', coords?.lat, coords?.lon],
     queryFn: () => getWeather(coords),
   })
 
@@ -66,13 +66,13 @@ export default function CurrentWeather({ coords, location }: Props) {
     queryFn: () => getCountryName(location?.country ?? ''),
   })
 
-  const locationName: string = location
+  const locationName: string | null = location
     ? [location.name, location.state, countryName?.name.common]
         .filter(Boolean)
         .join(', ')
-    : ''
+    : null
 
-  return (
+  return weatherData ? (
     <Card
       heading={
         locationName ? `Current Weather (${locationName})` : 'Current Weather'
@@ -115,5 +115,7 @@ export default function CurrentWeather({ coords, location }: Props) {
         </div>
       </div>
     </Card>
+  ) : (
+    <CurrentWeatherSkeleton />
   )
 }

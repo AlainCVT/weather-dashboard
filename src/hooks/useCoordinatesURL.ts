@@ -1,12 +1,12 @@
 import type { Coords } from '@/types'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-const getInitialCoords = (): Coords => {
+const getInitialCoords = (): Coords | null => {
   const params = new URLSearchParams(window.location.search)
   const lat = params.get('lat')
   const lon = params.get('lon')
 
-  if (lat && lon) {
+  if (lat !== null && lon !== null) {
     const parsedLat = parseFloat(lat)
     const parsedLon = parseFloat(lon)
 
@@ -15,20 +15,25 @@ const getInitialCoords = (): Coords => {
     }
   }
 
-  return { lat: 0, lon: 0 }
+  return null
 }
 
 export function useCoordinatesURL() {
-  const [coords, setCoords] = useState<Coords>(getInitialCoords)
+  const [coords, setCoords] = useState<Coords | null>(getInitialCoords)
 
-  useEffect(() => {
+  const updateURL = (coords: Coords | null) => {
+    if (!coords) {
+      window.history.replaceState(null, '', window.location.pathname)
+      return
+    }
+
     const params = new URLSearchParams(window.location.search)
     params.set('lat', coords.lat.toString())
     params.set('lon', coords.lon.toString())
 
     const newURL = `${window.location.pathname}?${params.toString()}`
     window.history.replaceState(null, '', newURL)
-  }, [coords])
+  }
 
-  return [coords, setCoords] as const
+  return [coords, setCoords, updateURL] as const
 }

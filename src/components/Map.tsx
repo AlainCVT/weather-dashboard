@@ -179,6 +179,7 @@ const MapClick = ({ coords, onMapClick }: Omit<Props, 'mapType'>) => {
   const { setLocationCity } = useLocationCityStore()
 
   useEffect(() => {
+    if (!coords) return
     map.panTo([coords.lat, coords.lon])
   }, [map, coords])
 
@@ -257,8 +258,6 @@ const MapLegend = () => {
 }
 
 export default function Map({ coords, onMapClick, className }: Props) {
-  const { lat, lon } = coords
-
   const [shouldAlertScroll, setShouldAlertScroll] = useState<boolean>(false)
 
   const alertScrollTimerRef = useRef<number | null>(null)
@@ -290,8 +289,8 @@ export default function Map({ coords, onMapClick, className }: Props) {
     <div className={clsx(className, 'border-accent relative grid border')}>
       <MapContainer
         className="h-128 w-full"
-        center={[lat, lon]}
-        zoom={5}
+        center={[coords?.lat ?? 0, coords?.lon ?? 0]}
+        zoom={1.5}
         touchZoom={true}
         zoomControl={false}
         scrollWheelZoom={false}
@@ -305,7 +304,9 @@ export default function Map({ coords, onMapClick, className }: Props) {
         <TileLayer
           url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`}
         />
-        <Marker position={[lat, lon]} icon={MarkerIcon} />
+        {coords && (
+          <Marker position={[coords.lat, coords.lon]} icon={MarkerIcon} />
+        )}
       </MapContainer>
       <MapLegend />
       <div
@@ -318,7 +319,7 @@ export default function Map({ coords, onMapClick, className }: Props) {
       >
         <span className="text-center">
           Use{' '}
-          <span className="border-foreground bg-background mx-1 rounded-sm border px-1 py-0.5">
+          <span className="border-border text-muted-foreground bg-background mx-1 rounded-sm border px-1 py-0.5">
             {isMac() ? '⌘' : 'Ctrl'}
           </span>{' '}
           + scroll to zoom the map

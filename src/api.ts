@@ -14,7 +14,11 @@ const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 const OPENWEATHER_API_URL = import.meta.env.VITE_OPENWEATHER_API_URL
 const RESTCOUNTRIES_API_URL = import.meta.env.VITE_RESTCOUNTRIES_API_URL
 
-export async function getWeather(coords: Coords): Promise<WeatherResponse> {
+export async function getWeather(
+  coords: Coords,
+): Promise<WeatherResponse | null> {
+  if (!coords) return null
+
   const url = new URL('data/3.0/onecall', OPENWEATHER_API_URL)
 
   url.searchParams.append('lat', coords.lat.toString())
@@ -42,7 +46,7 @@ export async function getCountryName(
 }
 
 export async function getLocation(
-  payload: string | Coords,
+  payload?: string | Coords,
 ): Promise<LocationResponse> {
   if (!payload) return []
 
@@ -67,7 +71,9 @@ export async function getLocation(
 
 export async function getAirPollution(
   coords: Coords,
-): Promise<AirPollutionResponse> {
+): Promise<AirPollutionResponse | null> {
+  if (!coords) return null
+
   const url = new URL('data/2.5/air_pollution', OPENWEATHER_API_URL)
 
   url.searchParams.append('lat', coords.lat.toString())

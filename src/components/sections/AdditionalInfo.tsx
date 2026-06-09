@@ -99,11 +99,11 @@ export function AdditionalInfoSkeleton() {
 
 export default function AdditionalInfo({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather', coords.lat, coords.lon],
+    queryKey: ['weather', coords?.lat, coords?.lon],
     queryFn: () => getWeather(coords),
   })
 
-  return (
+  return data ? (
     <Card heading="Additional Weather Info">
       <div className="grid gap-4">
         <div className="grid gap-6">
@@ -124,5 +124,7 @@ export default function AdditionalInfo({ coords }: Props) {
         </div>
       </div>
     </Card>
+  ) : (
+    <AdditionalInfoSkeleton />
   )
 }

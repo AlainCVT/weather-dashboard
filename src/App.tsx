@@ -21,26 +21,31 @@ import {
 } from '@/components/sections'
 
 function App() {
-  const [coords, setCoords] = useCoordinatesURL()
+  const [coords, setCoords, updateURL] = useCoordinatesURL()
 
   const { locationCity } = useLocationCityStore()
 
-  const { data: locationCityData } = useQuery({
-    queryKey: ['location-city', locationCity, coords.lat, coords.lon],
+  const { data: locationData } = useQuery({
+    queryKey: [
+      'location-city',
+      ...(locationCity ? [locationCity] : [coords?.lat, coords?.lon]),
+    ],
     queryFn: () => getLocation(locationCity ?? coords),
   })
-
-  const onMapClick = (coords: Coords) => {
-    setCoords(coords)
-  }
 
   const currentCoords: Coords =
     locationCity === null
       ? coords
-      : {
-          lat: locationCityData?.[0].lat ?? 0,
-          lon: locationCityData?.[0].lon ?? 0,
-        }
+      : locationData?.[0]
+        ? {
+            lat: locationData?.[0].lat,
+            lon: locationData?.[0].lon,
+          }
+        : null
+
+  if (currentCoords) {
+    updateURL(currentCoords)
+  }
 
   return (
     <SidePanelStateProvider>
@@ -51,13 +56,15 @@ function App() {
             <Map
               className="col-span-full"
               coords={currentCoords}
-              onMapClick={onMapClick}
+              onMapClick={(coords) => {
+                setCoords(coords)
+              }}
             />
             <div className="col-span-12 grid md:col-span-6 2xl:col-span-4 2xl:row-span-2">
               <Suspense fallback={<SectionsCurrentWeatherSkeleton />}>
                 <SectionsCurrentWeather
                   coords={currentCoords}
-                  {...(locationCityData && { location: locationCityData[0] })}
+                  {...(locationData && { location: locationData[0] })}
                 />
               </Suspense>
             </div>

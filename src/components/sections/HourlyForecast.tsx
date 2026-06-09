@@ -31,11 +31,11 @@ export function HourlyForecastSkeleton() {
 
 export default function HourlyForecast({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather', coords.lat, coords.lon],
+    queryKey: ['weather', coords?.lat, coords?.lon],
     queryFn: () => getWeather(coords),
   })
 
-  return (
+  return data ? (
     <Card heading="Hourly Forecast" className="overflow-hidden">
       <div className="-m-4 flex gap-6 overflow-x-auto p-4">
         {data.hourly.map((hour) => (
@@ -57,5 +57,7 @@ export default function HourlyForecast({ coords }: Props) {
         ))}
       </div>
     </Card>
+  ) : (
+    <HourlyForecastSkeleton />
   )
 }

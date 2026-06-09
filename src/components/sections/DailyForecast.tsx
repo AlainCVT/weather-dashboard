@@ -44,11 +44,11 @@ export function DailyForecastSkeleton() {
 
 export default function DailyForecast({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather', coords.lat, coords.lon],
+    queryKey: ['weather', coords?.lat, coords?.lon],
     queryFn: () => getWeather(coords),
   })
 
-  return (
+  return data ? (
     <Card heading="Daily Forecast">
       <div className="-m-4 grid grow overflow-auto p-4">
         <table className="whitespace-nowrap [&_td>*]:px-2">
@@ -87,5 +87,7 @@ export default function DailyForecast({ coords }: Props) {
         </table>
       </div>
     </Card>
+  ) : (
+    <DailyForecastSkeleton />
   )
 }

@@ -24,6 +24,11 @@ export default function MapTypeDropdown() {
       setValue={setMapType}
     >
       <SelectGroup>
+        {mapType && (
+          <SelectItem key="none" value={null}>
+            None
+          </SelectItem>
+        )}
         {Object.entries(TYPES).map(([type, label]) => (
           <SelectItem key={type} value={type}>
             {label}

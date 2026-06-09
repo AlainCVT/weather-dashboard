@@ -4,7 +4,7 @@ export type ColorStop = {
   opacity?: number
 }
 
-export type Coords = {
+export type Coords = null | {
   lat: number
   lon: number
 }
