@@ -1,11 +1,10 @@
-import { useLocationCityStore } from '@/stores/location-city'
-
-import Dropdown from '@/components/dropdowns/Dropdown'
+import Dropdown from '@/components/Dropdown'
 import {
   SelectGroup,
   SelectItem,
   SelectSeparator,
 } from '@/components/ui/select'
+import { useLocationCityStore } from '@/stores/location-city'
 
 const LOCATIONS_CITIES = {
   Africa: ['Cairo', 'Lagos', 'Johannesburg', 'Nairobi', 'Casablanca'],

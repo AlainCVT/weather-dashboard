@@ -1,13 +1,12 @@
-import { useSidePanelState } from '@/contexts/side-panel'
-import type { Coords } from '@/types'
-import clsx from 'clsx'
-import { Suspense, useEffect, type ComponentProps } from 'react'
-
 import Icon from '@/components/icons/Icon'
 import AirPollutionStats, {
   AirPollutionStatsSkeleton,
 } from '@/components/sections/AirPollutionStats'
 import { Button } from '@/components/ui/button'
+import { useSidePanelState } from '@/contexts/side-panel'
+import type { Coords } from '@/types'
+import clsx from 'clsx'
+import { Suspense, useEffect, type ComponentProps } from 'react'
 
 type Props = ComponentProps<'aside'> & {
   coords: Coords
@@ -17,6 +16,7 @@ export default function SidePanel({ coords, className }: Props) {
   const { toggleState, isOpen } = useSidePanelState()
 
   useEffect(() => {
+    // Close panel is Escape button is pressed
     const escapePanel = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         toggleState('close')

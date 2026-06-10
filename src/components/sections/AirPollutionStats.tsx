@@ -1,10 +1,4 @@
 import { getAirPollution } from '@/api'
-import { capitalize } from '@/helpers/capitalize'
-import type { AirPollutionResponse } from '@/schemas/air-pollution'
-import type { Coords } from '@/types'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import clsx from 'clsx'
-
 import Card from '@/components/Card'
 import Icon from '@/components/icons/Icon'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -14,6 +8,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { capitalize } from '@/helpers/capitalize'
+import type { AirPollutionResponse } from '@/schemas/air-pollution'
+import type { Coords } from '@/types'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import clsx from 'clsx'
 
 type Props = {
   coords: Coords
@@ -24,87 +23,92 @@ type AirPollutant = keyof AirPollutionResponse['list'][number]['components']
 type AirQualityLevel = 'Good' | 'Fair' | 'Moderate' | 'Poor' | 'Very Poor'
 type AirQualityRanges = Record<
   AirPollutant,
-  Record<AirQualityLevel, Record<'min' | 'max', number>>
+  {
+    name: string
+    qualities: Record<AirQualityLevel, Record<'min' | 'max', number>>
+  }
 >
-
-const POLLUTANT_NAME: Record<AirPollutant, string> = {
-  so2: 'sulfur dioxide',
-  no2: 'nitrogen dioxide',
-  pm10: 'particulate matter 10',
-  pm2_5: 'fine particles matter',
-  o3: 'ozone',
-  co: 'carbon monoxide',
-  no: 'nitrogen monoxide',
-  nh3: 'ammonia',
-}
-
-const AIR_POLLUTANTS: AirPollutant[] = [
-  'co',
-  'no',
-  'no2',
-  'o3',
-  'so2',
-  'pm2_5',
-  'pm10',
-  'nh3',
-]
 
 const AIR_QUALITY_RANGES: AirQualityRanges = {
   co: {
-    Good: { min: 0, max: 4400 },
-    Fair: { min: 4400, max: 9400 },
-    Moderate: { min: 9400, max: 12400 },
-    Poor: { min: 12400, max: 15400 },
-    'Very Poor': { min: 15400, max: Infinity },
+    name: 'carbon monoxide',
+    qualities: {
+      Good: { min: 0, max: 4400 },
+      Fair: { min: 4400, max: 9400 },
+      Moderate: { min: 9400, max: 12400 },
+      Poor: { min: 12400, max: 15400 },
+      'Very Poor': { min: 15400, max: Infinity },
+    },
   },
   no: {
-    Good: { min: 0, max: 20 },
-    Fair: { min: 20, max: 40 },
-    Moderate: { min: 40, max: 60 },
-    Poor: { min: 60, max: 80 },
-    'Very Poor': { min: 80, max: Infinity },
+    name: 'nitrogen monoxide',
+    qualities: {
+      Good: { min: 0, max: 20 },
+      Fair: { min: 20, max: 40 },
+      Moderate: { min: 40, max: 60 },
+      Poor: { min: 60, max: 80 },
+      'Very Poor': { min: 80, max: Infinity },
+    },
   },
   no2: {
-    Good: { min: 0, max: 40 },
-    Fair: { min: 40, max: 70 },
-    Moderate: { min: 70, max: 150 },
-    Poor: { min: 150, max: 200 },
-    'Very Poor': { min: 200, max: Infinity },
+    name: 'nitrogen dioxide',
+    qualities: {
+      Good: { min: 0, max: 40 },
+      Fair: { min: 40, max: 70 },
+      Moderate: { min: 70, max: 150 },
+      Poor: { min: 150, max: 200 },
+      'Very Poor': { min: 200, max: Infinity },
+    },
   },
   o3: {
-    Good: { min: 0, max: 60 },
-    Fair: { min: 60, max: 100 },
-    Moderate: { min: 100, max: 140 },
-    Poor: { min: 140, max: 180 },
-    'Very Poor': { min: 180, max: Infinity },
+    name: 'ozone',
+    qualities: {
+      Good: { min: 0, max: 60 },
+      Fair: { min: 60, max: 100 },
+      Moderate: { min: 100, max: 140 },
+      Poor: { min: 140, max: 180 },
+      'Very Poor': { min: 180, max: Infinity },
+    },
   },
   so2: {
-    Good: { min: 0, max: 20 },
-    Fair: { min: 20, max: 80 },
-    Moderate: { min: 80, max: 250 },
-    Poor: { min: 250, max: 350 },
-    'Very Poor': { min: 350, max: Infinity },
+    name: 'sulfur dioxide',
+    qualities: {
+      Good: { min: 0, max: 20 },
+      Fair: { min: 20, max: 80 },
+      Moderate: { min: 80, max: 250 },
+      Poor: { min: 250, max: 350 },
+      'Very Poor': { min: 350, max: Infinity },
+    },
   },
   pm2_5: {
-    Good: { min: 0, max: 10 },
-    Fair: { min: 10, max: 25 },
-    Moderate: { min: 25, max: 50 },
-    Poor: { min: 50, max: 75 },
-    'Very Poor': { min: 75, max: Infinity },
+    name: 'fine particles matter',
+    qualities: {
+      Good: { min: 0, max: 10 },
+      Fair: { min: 10, max: 25 },
+      Moderate: { min: 25, max: 50 },
+      Poor: { min: 50, max: 75 },
+      'Very Poor': { min: 75, max: Infinity },
+    },
   },
   pm10: {
-    Good: { min: 0, max: 20 },
-    Fair: { min: 20, max: 50 },
-    Moderate: { min: 50, max: 100 },
-    Poor: { min: 100, max: 200 },
-    'Very Poor': { min: 200, max: Infinity },
+    name: 'particulate matter 10',
+    qualities: {
+      Good: { min: 0, max: 20 },
+      Fair: { min: 20, max: 50 },
+      Moderate: { min: 50, max: 100 },
+      Poor: { min: 100, max: 200 },
+      'Very Poor': { min: 200, max: Infinity },
+    },
   },
   nh3: {
-    Good: { min: 0, max: 40 },
-    Fair: { min: 40, max: 70 },
-    Moderate: { min: 70, max: 150 },
-    Poor: { min: 150, max: 200 },
-    'Very Poor': { min: 200, max: Infinity },
+    name: 'ammonia',
+    qualities: {
+      Good: { min: 0, max: 40 },
+      Fair: { min: 40, max: 70 },
+      Moderate: { min: 70, max: 150 },
+      Poor: { min: 150, max: 200 },
+      'Very Poor': { min: 200, max: Infinity },
+    },
   },
 }
 
@@ -129,19 +133,17 @@ export function AirPollutionStatsSkeleton() {
           </Tooltip>
         </span>
       </div>
-      {AIR_POLLUTANTS.map((key) => {
-        const pollutant = AIR_QUALITY_RANGES[key]
-
+      {Object.entries(AIR_QUALITY_RANGES).map(([symbol, pollutant], index) => {
         return (
           <Card
-            key={key}
+            key={`pollutant-${index}`}
             className="hover:border-ring from-sidebar-accent/40 to-sidebar-accent/0 transition-colors duration-200"
           >
             <div className="grid gap-3">
               <div className="flex justify-between">
                 <span className="flex items-center gap-1">
                   <span>
-                    <span className="font-semibold">{capitalize(key)}</span>{' '}
+                    <span className="font-semibold">{capitalize(symbol)}</span>{' '}
                     <span className="text-xs">(μg/m&sup3;)</span>
                   </span>
                   <Tooltip>
@@ -154,7 +156,7 @@ export function AirPollutionStatsSkeleton() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs">
-                        Concentration of {POLLUTANT_NAME[key]}
+                        Concentration of {pollutant.name}
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -163,7 +165,7 @@ export function AirPollutionStatsSkeleton() {
               </div>
               <Skeleton className="h-8 w-full" />
               <div className="flex items-center justify-between">
-                {Object.keys(pollutant).map((quality) => (
+                {Object.keys(pollutant.qualities).map((quality) => (
                   <span
                     key={quality}
                     className="relative inline-flex items-center justify-center py-0.5 text-xs text-transparent select-none"
@@ -207,23 +209,24 @@ export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
           </Tooltip>
         </span>
       </div>
-      {Object.entries(data.list[0].components).map(([key, value]) => {
-        const pollutant = AIR_QUALITY_RANGES[key]
+      {Object.entries(data.list[0].components).map(([symbol, value]) => {
+        const pollutant = AIR_QUALITY_RANGES[symbol]
+
         const min = Math.min(
-          pollutant['Good'].min === -Infinity
-            ? pollutant['Good'].max
-            : pollutant['Good'].min,
+          pollutant.qualities['Good'].min === -Infinity
+            ? pollutant.qualities['Good'].max
+            : pollutant.qualities['Good'].min,
           value,
         )
         const max = Math.max(
-          pollutant['Very Poor'].max === Infinity
-            ? pollutant['Very Poor'].min
-            : pollutant['Very Poor'].max,
+          pollutant.qualities['Very Poor'].max === Infinity
+            ? pollutant.qualities['Very Poor'].min
+            : pollutant.qualities['Very Poor'].max,
           value,
         )
 
         const currentQualityLevel: AirQualityLevel = (() => {
-          for (const [level, range] of Object.entries(pollutant)) {
+          for (const [level, range] of Object.entries(pollutant.qualities)) {
             if (value >= range.min && value <= range.max) return level
           }
           return 'Very Poor'
@@ -231,14 +234,14 @@ export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
 
         return (
           <Card
-            key={key}
+            key={symbol}
             className="hover:border-ring from-sidebar-accent/40 to-sidebar-accent/0 transition-colors duration-200"
           >
             <div className="grid gap-3">
               <div className="flex justify-between">
                 <span className="flex items-center gap-1">
                   <span>
-                    <span className="font-semibold">{capitalize(key)}</span>{' '}
+                    <span className="font-semibold">{capitalize(symbol)}</span>{' '}
                     <span className="text-xs">(μg/m&sup3;)</span>
                   </span>
                   <Tooltip>
@@ -251,7 +254,7 @@ export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs">
-                        Concentration of {POLLUTANT_NAME[key]}
+                        Concentration of {pollutant.name}
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -264,7 +267,7 @@ export default function AirPollutionStats({ coords }: Pick<Props, 'coords'>) {
                 <span>{max}</span>
               </div>
               <div className="flex items-center justify-between">
-                {Object.keys(pollutant).map((quality) => (
+                {Object.keys(pollutant.qualities).map((quality) => (
                   <span
                     key={quality}
                     className={clsx(

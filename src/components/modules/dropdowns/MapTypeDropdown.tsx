@@ -1,7 +1,6 @@
-import { useMapTypeStore } from '@/stores/map-type'
-
-import Dropdown from '@/components/dropdowns/Dropdown'
+import Dropdown from '@/components/Dropdown'
 import { SelectGroup, SelectItem } from '@/components/ui/select'
+import { useMapTypeStore } from '@/stores/map-type'
 
 const TYPES = {
   clouds_new: 'Clouds',

@@ -1,20 +1,20 @@
 export {
   default as SectionsAdditionalInfo,
   AdditionalInfoSkeleton as SectionsAdditionalInfoSkeleton,
-} from '@/components/sections/AdditionalInfo'
+} from './AdditionalInfo'
 export {
   default as SectionsAirPollutionStats,
   AirPollutionStatsSkeleton as SectionsAirPollutionStatsSkeleton,
-} from '@/components/sections/AirPollutionStats'
+} from './AirPollutionStats'
 export {
   default as SectionsCurrentWeather,
   CurrentWeatherSkeleton as SectionsCurrentWeatherSkeleton,
-} from '@/components/sections/CurrentWeather'
+} from './CurrentWeather'
 export {
   default as SectionsDailyForecast,
   DailyForecastSkeleton as SectionsDailyForecastSkeleton,
-} from '@/components/sections/DailyForecast'
+} from './DailyForecast'
 export {
   default as SectionsHourlyForecast,
   HourlyForecastSkeleton as SectionsHourlyForecastSkeleton,
-} from '@/components/sections/HourlyForecast'
+} from './HourlyForecast'

@@ -1,13 +1,5 @@
 import { getLocation } from '@/api'
-import { SidePanelStateProvider } from '@/contexts/side-panel'
-import { useCoordinatesURL } from '@/hooks/useCoordinatesURL'
-import { useLocationCityStore } from '@/stores/location-city'
-import type { Coords } from '@/types'
-import { useQuery } from '@tanstack/react-query'
-import { Suspense } from 'react'
-import './App.css'
-
-import Map from '@/components/Map'
+import { ModulesMap } from '@/components/modules'
 import { PartialsHeader, PartialsSidePanel } from '@/components/partials'
 import {
   SectionsAdditionalInfo,
@@ -20,6 +12,13 @@ import {
   SectionsHourlyForecastSkeleton,
 } from '@/components/sections'
 import Title, { TitleSkeleton } from '@/components/Title'
+import { SidePanelStateProvider } from '@/contexts/side-panel'
+import { useCoordinatesURL } from '@/hooks/useCoordinatesURL'
+import { useLocationCityStore } from '@/stores/location-city'
+import type { Coords } from '@/types'
+import { useQuery } from '@tanstack/react-query'
+import { Suspense } from 'react'
+import './App.css'
 
 function App() {
   const [coords, setCoords, updateURL] = useCoordinatesURL()
@@ -60,7 +59,7 @@ function App() {
                 {...(locationData && { location: locationData[0] })}
               />
             </Suspense>
-            <Map
+            <ModulesMap
               className="col-span-full"
               coords={currentCoords}
               onMapClick={(coords) => {

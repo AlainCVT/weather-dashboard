@@ -163,13 +163,13 @@ type Props = SVGProps<SVGSVGElement> & {
 export default function Icon({ name, size = 24, ...props }: Props) {
   return (
     <svg
+      {...props}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       {...{
         [ICONS[name].type]: 'currentColor',
         ...(size && { width: size, height: size }),
       }}
-      {...props}
     >
       {ICONS[name].node}
     </svg>

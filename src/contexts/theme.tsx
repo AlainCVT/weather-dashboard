@@ -30,6 +30,7 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     }
   }
 
+  // Update <html /> class name
   useEffect(() => {
     const root = document.documentElement
     if (theme === 'dark') {

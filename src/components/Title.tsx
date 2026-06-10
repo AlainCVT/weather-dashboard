@@ -1,13 +1,12 @@
 import { getCountryName } from '@/api'
+import { Skeleton } from '@/components/ui/skeleton'
 import type { LocationResponse } from '@/schemas/location'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import type { ComponentProps } from 'react'
 
-import { Skeleton } from '@/components/ui/skeleton'
-
 type Props = ComponentProps<'h1'> & {
-  location?: LocationResponse[number]
+  location?: LocationResponse[number] | null
 }
 
 export function TitleSkeleton({ className }: Props) {
@@ -19,6 +18,7 @@ export function TitleSkeleton({ className }: Props) {
 }
 
 export default function Title({ location, className }: Props) {
+  // Fetch and display location name
   const { data: countryName } = useSuspenseQuery({
     queryKey: ['country', location?.country],
     queryFn: () => getCountryName(location?.country ?? ''),

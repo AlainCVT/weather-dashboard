@@ -1,12 +1,11 @@
 import { getWeather } from '@/api'
+import Card from '@/components/Card'
+import Icon, { type IconsNames } from '@/components/icons/Icon'
+import { Skeleton } from '@/components/ui/skeleton'
 import type { WeatherResponse } from '@/schemas/weather'
 import type { Coords } from '@/types'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-
-import Card from '@/components/Card'
-import Icon, { type IconsNames } from '@/components/icons/Icon'
-import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
   coords: Coords

@@ -1,8 +1,7 @@
-import { ThemeContext } from '@/contexts/theme'
-import { useContext } from 'react'
-
 import Icon from '@/components/icons/Icon'
 import { Switch } from '@/components/ui/switch'
+import { ThemeContext } from '@/contexts/theme'
+import { useContext } from 'react'
 
 export default function ThemeSwitcher() {
   const { theme, toggleTheme } = useContext(ThemeContext)

@@ -1,2 +1,2 @@
-export { default as PartialsHeader } from '@/components/partials/Header'
-export { default as PartialsSidePanel } from '@/components/partials/SidePanel'
+export { default as PartialsHeader } from './Header'
+export { default as PartialsSidePanel } from './SidePanel'

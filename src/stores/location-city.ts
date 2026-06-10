@@ -1,4 +1,4 @@
-import type { LocationCity } from '@/components/dropdowns/LocationCityDropdown'
+import type { LocationCity } from '@/components/modules/dropdowns/LocationCityDropdown'
 import { create } from 'zustand'
 
 type LocationCityStore = {

@@ -1,4 +1,4 @@
-import type { MapType } from '@/components/dropdowns/MapTypeDropdown'
+import type { MapType } from '@/components/modules/dropdowns/MapTypeDropdown'
 import { create } from 'zustand'
 
 type MapTypeStore = {

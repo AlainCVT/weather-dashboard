@@ -1,3 +1,9 @@
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import clsx from 'clsx'
 import type {
   ComponentProps,
@@ -5,13 +11,6 @@ import type {
   PropsWithChildren,
   SetStateAction,
 } from 'react'
-
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 
 type Props<T extends string> = ComponentProps<'div'> &
   PropsWithChildren<{

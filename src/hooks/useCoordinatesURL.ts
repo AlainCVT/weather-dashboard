@@ -1,7 +1,8 @@
 import type { Coords } from '@/types'
 import { useState } from 'react'
 
-const getInitialCoords = (): Coords | null => {
+const getInitialCoords = (): Coords => {
+  // Get coordinates from URL
   const params = new URLSearchParams(window.location.search)
   const lat = params.get('lat')
   const lon = params.get('lon')
@@ -19,9 +20,9 @@ const getInitialCoords = (): Coords | null => {
 }
 
 export function useCoordinatesURL() {
-  const [coords, setCoords] = useState<Coords | null>(getInitialCoords)
+  const [coords, setCoords] = useState<Coords>(getInitialCoords)
 
-  const updateURL = (coords: Coords | null) => {
+  const updateURL = (coords: Coords) => {
     if (!coords) {
       window.history.replaceState(null, '', window.location.pathname)
       return
