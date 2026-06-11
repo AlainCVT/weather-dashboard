@@ -61,10 +61,12 @@ export default function Map({ coords, onMapClick, className }: Props) {
       <MapContainer
         className="h-128 w-full"
         center={[coords?.lat ?? 0, coords?.lon ?? 0]}
-        zoom={1.5}
-        touchZoom={true}
-        zoomControl={false}
+        maxBoundsViscosity={1}
+        minZoom={1}
         scrollWheelZoom={false}
+        touchZoom={true}
+        zoom={1.5}
+        zoomControl={false}
       >
         <MapScrollZoomController
           displayAlertScroll={displayAlertScroll}
