@@ -81,3 +81,7 @@ pnpm test:ui
 3. Open a pull request.
 
 Enjoy exploring the weather dashboard!
+
+## Credits
+
+https://www.youtube.com/watch?v=M-iV9R3kLNA
