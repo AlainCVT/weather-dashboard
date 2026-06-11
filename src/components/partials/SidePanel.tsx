@@ -36,7 +36,7 @@ export default function SidePanel({ coords, className }: Props) {
     <aside
       className={clsx(
         className,
-        'bg-sidebar border-accent grid h-screen w-xs content-start overflow-auto border-l shadow-md duration-400 not-lg:transition-transform',
+        'bg-sidebar border-accent grid h-screen w-xs content-start overflow-auto border shadow-md duration-400 not-lg:transition-transform',
         {
           'not-lg:-translate-x-full': isOpen,
           'not-lg:pointer-none': !isOpen,

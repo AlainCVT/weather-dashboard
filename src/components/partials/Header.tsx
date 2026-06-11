@@ -11,12 +11,12 @@ export default function Header() {
   const { toggleState } = useSidePanelState()
 
   return (
-    <header className="bg-background/80 border-b-accent sticky top-0 z-1 grid grid-flow-col items-center justify-between border-b pr-6 backdrop-blur-sm">
-      <div className="no-scrollbar grid grid-flow-col justify-start gap-4 overflow-auto px-4 py-6">
+    <header className="bg-background/80 border-accent sticky top-0 z-1 grid grid-flow-col items-center justify-between border border-r-0 backdrop-blur-sm">
+      <div className="no-scrollbar grid grid-flow-col justify-start gap-4 overflow-auto px-6 py-4">
         <ModulesLocationCityDropdown />
         <ModulesMapTypeDropdown />
       </div>
-      <div className="before:from-background before:to-background/0 relative grid h-full grid-flow-col items-center gap-3 before:pointer-events-none before:absolute before:right-full before:h-full before:w-4 before:bg-linear-to-l">
+      <div className="border-accent grid h-full grid-flow-col items-center gap-3 border-l px-6">
         <ThemeSwitcher />
         <Button
           className="lg:hidden"
