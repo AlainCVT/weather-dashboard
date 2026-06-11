@@ -12,3 +12,4 @@ export const LocationSchema = z.array(
 )
 
 export type LocationResponse = z.infer<typeof LocationSchema>
+export type Location = LocationResponse[number]

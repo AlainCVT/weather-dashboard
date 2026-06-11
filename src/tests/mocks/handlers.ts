@@ -1,3 +1,4 @@
+import { PARIS_COORDS } from '@/tests/fixtures/coords'
 import { HttpResponse, http } from 'msw'
 
 const OPENWEATHER_API_URL = import.meta.env.VITE_OPENWEATHER_API_URL
@@ -11,12 +12,14 @@ export const handlers = [
     const lon = url.searchParams.get('lon')
 
     // Paris coordinates
-    if (lat === '48.8588897' && lon === '2.3200410217200766') {
+    if (
+      lat === PARIS_COORDS.lat.toString() &&
+      lon === PARIS_COORDS.lon.toString()
+    ) {
       return HttpResponse.json([
         {
           name: 'Paris',
-          lat: 48.8588897,
-          lon: 2.3200410217200766,
+          ...PARIS_COORDS,
           country: 'FR',
           state: 'Ile-de-France',
         },
@@ -57,8 +60,7 @@ export const handlers = [
       return HttpResponse.json([
         {
           name: 'Paris',
-          lat: 48.8588897,
-          lon: 2.3200410217200766,
+          ...PARIS_COORDS,
           country: 'FR',
           state: 'Ile-de-France',
         },
