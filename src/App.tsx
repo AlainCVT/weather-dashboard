@@ -11,7 +11,7 @@ import {
   SectionsHourlyForecast,
   SectionsHourlyForecastSkeleton,
 } from '@/components/sections'
-import Title, { TitleSkeleton } from '@/components/Title'
+import Title from '@/components/Title'
 import { SidePanelStateProvider } from '@/contexts/side-panel'
 import { useCoordinatesURL } from '@/hooks/useCoordinatesURL'
 import { useLocationCityStore } from '@/stores/location-city'
@@ -25,7 +25,7 @@ function App() {
 
   const { locationCity } = useLocationCityStore()
 
-  const { data: locationData } = useQuery({
+  const { data: locationData, isLoading } = useQuery({
     queryKey: [
       'location-city',
       ...(locationCity ? [locationCity] : [coords?.lat, coords?.lon]),
@@ -53,12 +53,11 @@ function App() {
         <div className="grid">
           <PartialsHeader />
           <div className="grid grid-cols-12 gap-6 p-6">
-            <Suspense fallback={<TitleSkeleton />}>
-              <Title
-                className="col-span-full"
-                {...(locationData && { location: locationData[0] })}
-              />
-            </Suspense>
+            <Title
+              className="col-span-full"
+              isLoading={isLoading}
+              {...(locationData && { location: locationData[0] })}
+            />
             <ModulesMap
               className="col-span-full"
               coords={currentCoords}

@@ -2,7 +2,6 @@ import { PARIS_COORDS } from '@/tests/fixtures/coords'
 import { HttpResponse, http } from 'msw'
 
 const OPENWEATHER_API_URL = import.meta.env.VITE_OPENWEATHER_API_URL
-const RESTCOUNTRIES_API_URL = import.meta.env.VITE_RESTCOUNTRIES_API_URL
 
 export const handlers = [
   // Mock reverse geocoding for Paris coordinates
@@ -27,28 +26,6 @@ export const handlers = [
     }
 
     return HttpResponse.json([])
-  }),
-
-  // Mock country name lookup - match any request to this endpoint
-  http.get(`${RESTCOUNTRIES_API_URL}/v3.1/alpha/:code`, ({ params }) => {
-    const { code } = params
-
-    if (code === 'FR') {
-      return HttpResponse.json({
-        name: {
-          common: 'France',
-          official: 'French Republic',
-        },
-      })
-    }
-
-    // Default response for other countries
-    return HttpResponse.json({
-      name: {
-        common: 'Unknown Country',
-        official: 'Unknown Country',
-      },
-    })
   }),
 
   // Mock direct geocoding (city search)
